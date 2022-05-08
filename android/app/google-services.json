@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "168480091349",
+    "project_id": "donateer-e69f9",
+    "storage_bucket": "donateer-e69f9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:168480091349:android:1c32c56a9afbe24db9065c",
+        "android_client_info": {
+          "package_name": "com.example.donateer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "168480091349-hi69u9k5ehrv3d9a1md2s43t93thm5jg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCF1Xlr9rk3qfc0Be3JQVRlHjxynpe6Wdo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "168480091349-hi69u9k5ehrv3d9a1md2s43t93thm5jg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "168480091349-qt7q1ldjnff3cpeurrcur5kstvmqjlp7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.donateer"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
