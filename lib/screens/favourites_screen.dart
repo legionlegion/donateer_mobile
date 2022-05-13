@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class OrganisationDetailsScreen extends StatelessWidget {
+class FavouritesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
