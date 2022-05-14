@@ -4,13 +4,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import './screens/auth_screen.dart';
+import './screens/auth_screen.dart'; // to remove
+import './screens/register_details_screen.dart';
+import './screens/register_income_screen.dart';
 import './screens/organisations_overview_screen.dart';
 import './screens/organisation_details_screen.dart';
 import './screens/profile_screen.dart';
 import './screens/favourites_screen.dart';
-
-import './widgets/organisation_item.dart'; // to remove
+import './screens/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,34 +27,29 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Welcome to Flutter',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-
-        primaryColor: Colors.red[50],
+        primarySwatch: Colors.red,
+        primaryColor: HexColor('#FFFBFE'),
         textTheme: TextTheme(
           headline1: TextStyle(
               fontSize: 32.0,
               fontWeight: FontWeight.bold,
               fontFamily: 'Buenard',
               color: Colors.red[900]), // page titles
-          //headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+          headline2: const TextStyle(
+            fontSize: 14.0,
+            fontWeight: FontWeight.bold,
+          ),
           //bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
         ),
+        appBarTheme: AppBarTheme(
+            backgroundColor: Colors.white, foregroundColor: Colors.black),
         elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(
-              Colors.black,
-            ), //button color
-            foregroundColor: MaterialStateProperty.all<Color>(
-              Color(0xffffffff),
-            ), //text (and icon)
+          style: ElevatedButton.styleFrom(
+            minimumSize: Size(double.infinity, 45),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            primary: Colors.black, //button color
+            onPrimary: Colors.white,
           ),
         ),
         textButtonTheme: TextButtonThemeData(
@@ -68,16 +64,29 @@ class MyApp extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (ctx, userSnapshot) {
             if (userSnapshot.hasData) {
+              print("wtf");
               return ProfileScreen();
             }
-            return AuthScreen();
+            print("here");
+            return OrganisationsOverviewScreen();
           }),
       routes: {
         '/profile': (ctx) => ProfileScreen(),
         '/favourite': (ctx) => FavouritesScreen(),
         '/home': (ctx) => OrganisationsOverviewScreen(),
-        '/organisation-detail': (ctx) => OrganisationDetailsScreen(),
       },
     );
   }
+}
+
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }

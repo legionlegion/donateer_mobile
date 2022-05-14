@@ -39,8 +39,7 @@ class _AuthFormState extends State<AuthForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Card(
+    return Card(
         margin: EdgeInsets.all(20),
         child: SingleChildScrollView(
           child: Padding(
@@ -122,7 +121,6 @@ class _AuthFormState extends State<AuthForm> {
             ),
           ),
         ),
-      ),
     );
   }
 }
