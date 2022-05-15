@@ -42,7 +42,8 @@ class MyApp extends StatelessWidget {
           //bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
         ),
         appBarTheme: AppBarTheme(
-            backgroundColor: Colors.white, foregroundColor: Colors.black),
+            backgroundColor: Colors.white, 
+            foregroundColor: Colors.black),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             minimumSize: Size(double.infinity, 45),
@@ -61,15 +62,16 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (ctx, userSnapshot) {
-            if (userSnapshot.hasData) {
-              print("wtf");
-              return ProfileScreen();
-            }
-            print("here");
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (ctx, userSnapshot) {
+          if (userSnapshot.hasData) {
+            print("wtf");
             return OrganisationsOverviewScreen();
-          }),
+          }
+          print("here");
+          return LoginScreen();
+        },
+      ),
       routes: {
         '/profile': (ctx) => ProfileScreen(),
         '/favourite': (ctx) => FavouritesScreen(),

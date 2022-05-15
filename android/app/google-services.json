@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "168480091349",
+    "firebase_url": "https://donateer-e69f9-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "donateer-e69f9",
     "storage_bucket": "donateer-e69f9.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "168480091349-jqlc09uvhququj51tl3sc3h6no5g01fp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.donateer",
+            "certificate_hash": "266510fa345d8ddecf8a28c5b84fe87a25b9c75b"
+          }
+        },
         {
           "client_id": "168480091349-hi69u9k5ehrv3d9a1md2s43t93thm5jg.apps.googleusercontent.com",
           "client_type": 3

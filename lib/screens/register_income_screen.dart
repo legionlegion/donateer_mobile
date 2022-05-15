@@ -91,12 +91,14 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
                         'email': widget.userEmail,
                         'income': _dropdownvalue,
                       });
+                      /*
                       Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LoginScreen(),
-                      ),
-                    );      
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginScreen(),
+                        ),
+                      );
+                      */
                     },
                   ),
                 ],
