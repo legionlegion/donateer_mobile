@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../models/organisation.dart';
 
 class OrganisationItem extends StatelessWidget {
   //final Organisation organisation;

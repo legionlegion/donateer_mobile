@@ -37,6 +37,7 @@ class _AuthScreenState extends State<AuthScreen> {
           email: email,
           password: password,
         );
+
         await FirebaseFirestore.instance
             .collection('Users')
             .doc(authResult.user!.uid)
@@ -45,9 +46,6 @@ class _AuthScreenState extends State<AuthScreen> {
           'email': email,
         });
       }
-      setState(() {
-        _isLoading = false;
-      });
     } on PlatformException catch (err) {
       var message = 'An error occurred, pelase check your credentials!';
 

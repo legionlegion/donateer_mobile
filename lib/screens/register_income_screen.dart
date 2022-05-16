@@ -22,6 +22,7 @@ class RegisterIncomeScreen extends StatefulWidget {
 
 class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
   String _dropdownvalue = 'Below \$1000';
+  var _isLoading = false;
 
   // List of items in our dropdown menu
   var items = [
@@ -78,6 +79,7 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
                   ElevatedButton(
                     child: Text('Finish'),
                     onPressed: () async {
+                      
                       UserCredential authResult = await FirebaseAuth.instance
                           .createUserWithEmailAndPassword(
                               email: widget.userEmail,
@@ -99,6 +101,7 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
                         ),
                       );
                       */
+                      
                     },
                   ),
                 ],

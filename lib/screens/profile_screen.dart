@@ -25,13 +25,7 @@ class ProfileScreen extends StatelessWidget {
                   icon: const Icon(Icons.exit_to_app),
                   onPressed: () {
                     FirebaseAuth.instance.signOut();
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LoginScreen(),
-                      ),
-                      (route) => false,
-                    );
+                    
                   },
                 ),
               ],

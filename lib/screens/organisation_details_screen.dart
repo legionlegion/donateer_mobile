@@ -1,13 +1,22 @@
+import 'package:donateer/widgets/donate_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 import './organisations_overview_screen.dart';
 
-class OrganisationDetailsScreen extends StatelessWidget {
+class OrganisationDetailsScreen extends StatefulWidget {
   final Map obj;
 
   const OrganisationDetailsScreen({Key? key, required this.obj})
       : super(key: key);
+
+  @override
+  _OrganisationDetailsScreenState createState() =>
+      _OrganisationDetailsScreenState();
+}
+
+class _OrganisationDetailsScreenState extends State<OrganisationDetailsScreen> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -24,17 +33,18 @@ class OrganisationDetailsScreen extends StatelessWidget {
                   (route) => false,
                 );
               }),
-          title: Text(obj['name']),
+          title: Text(widget.obj['name']),
           actions: <Widget>[
             IconButton(
                 icon: const Icon(Icons.favorite_outline_rounded),
                 onPressed: () {})
           ]),
       body: SingleChildScrollView(
-              child: Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Image.network(obj['imageUrl'], height: 145, fit: BoxFit.fitWidth),
+            Image.network(widget.obj['imageUrl'],
+                height: 145, fit: BoxFit.fitWidth),
             Padding(
               padding: const EdgeInsets.all(22),
               child: Container(
@@ -49,7 +59,7 @@ class OrganisationDetailsScreen extends StatelessWidget {
                           style: Theme.of(context).textTheme.headline2,
                         ),
                         const SizedBox(height: 7),
-                        Text(obj['description'].replaceAll("\\n", "\n")),
+                        Text(widget.obj['description'].replaceAll("\\n", "\n")),
                         const SizedBox(height: 15),
                         Text(
                           'CONTACT',
@@ -59,21 +69,21 @@ class OrganisationDetailsScreen extends StatelessWidget {
                         Row(children: [
                           const Icon(Icons.laptop),
                           const Spacer(flex: 1),
-                          Text(obj['website']),
+                          Text(widget.obj['website']),
                           const Spacer(flex: 15),
                         ]),
                         const SizedBox(height: 5),
                         Row(children: [
                           const Icon(Icons.call),
                           const Spacer(flex: 1),
-                          Text(obj['contactNo']),
+                          Text(widget.obj['contactNo']),
                           const Spacer(flex: 15),
                         ]),
                         const SizedBox(height: 5),
                         Row(children: [
                           const Icon(Icons.email),
                           const Spacer(flex: 1),
-                          Text(obj['email']),
+                          Text(widget.obj['email']),
                           const Spacer(flex: 15),
                         ]),
                       ],
@@ -84,57 +94,7 @@ class OrganisationDetailsScreen extends StatelessWidget {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return AlertDialog(
-                              scrollable: true,
-                              title: Text('Donationing your time'),
-                              content: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Form(
-                                  child: Column(
-                                    children: <Widget>[
-                                      Text(
-                                          'Thank you for your support to ${obj['name']}. How many hours do you want to donate?'),
-                                      TextFormField(
-                                        keyboardType: TextInputType.number,
-                                        decoration: InputDecoration(
-                                          labelText: 'Number of hours',
-                                        ),
-                                      ),
-                                      TextFormField(
-                                        keyboardType: TextInputType.datetime,
-                                        decoration: InputDecoration(
-                                          labelText: 'Date',
-                                        ),
-                                      ),
-                                      TextButton(
-                                          onPressed: () {
-                                            DatePicker.showDateTimePicker(context,
-                                                showTitleActions: true,
-                                                minTime:
-                                                    DateTime.now(),
-                                                onChanged: (date) {
-                                              print('change $date in time zone ' +
-                                                  date.timeZoneOffset.inHours
-                                                      .toString());
-                                            }, onConfirm: (date) {
-                                              print('confirm $date');
-                                            });
-                                          },
-                                          child: Text(
-                                            'Select end time',
-                                            style: TextStyle(color: Colors.blue),
-                                          )),
-                                      SizedBox(height: 12),
-                                      ElevatedButton(
-                                          child: Text("Submit"),
-                                          onPressed: () {
-                                            // your code
-                                          })
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
+                            return DonateDialog(name: widget.obj['name'],);
                           },
                         );
                       },

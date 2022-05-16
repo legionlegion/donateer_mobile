@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
         primaryColor: HexColor('#FFFBFE'),
+        secondaryHeaderColor: HexColor('#FCEEEE'),
         textTheme: TextTheme(
           headline1: TextStyle(
               fontSize: 32.0,
@@ -64,9 +65,9 @@ class MyApp extends StatelessWidget {
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (ctx, userSnapshot) {
-          if (userSnapshot.hasData) {
+          if (userSnapshot.hasData || FirebaseAuth.instance.currentUser != null) {
             print("wtf");
-            return OrganisationsOverviewScreen();
+            return ProfileScreen();
           }
           print("here");
           return LoginScreen();
