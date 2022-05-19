@@ -12,6 +12,7 @@ import './screens/organisation_details_screen.dart';
 import './screens/profile_screen.dart';
 import './screens/favourites_screen.dart';
 import './screens/login_screen.dart';
+import './screens/tabs_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -67,7 +68,7 @@ class MyApp extends StatelessWidget {
         builder: (ctx, userSnapshot) {
           if (userSnapshot.hasData || FirebaseAuth.instance.currentUser != null) {
             print("wtf");
-            return ProfileScreen();
+            return TabsScreen();
           }
           print("here");
           return LoginScreen();
