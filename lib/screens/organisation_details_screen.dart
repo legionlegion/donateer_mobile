@@ -1,6 +1,5 @@
 import 'package:donateer/widgets/donate_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 import './organisations_overview_screen.dart';
 
@@ -94,7 +93,7 @@ class _OrganisationDetailsScreenState extends State<OrganisationDetailsScreen> {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return DonateDialog(name: widget.obj['name'],);
+                            return DonateDialog(name: widget.obj['name'], obj: widget.obj);
                           },
                         );
                       },

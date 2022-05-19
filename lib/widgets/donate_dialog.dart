@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:add_2_calendar/add_2_calendar.dart';
 
+import '../screens/after_donation_screen.dart';
 
 class DonateDialog extends StatefulWidget {
   final String name;
+  final Map obj;
 
   DonateDialog({
     Key? key,
-    required this.name,
+    required this.name, required this.obj
   }) : super(key: key);
 
   @override
@@ -15,8 +18,19 @@ class DonateDialog extends StatefulWidget {
 }
 
 class _DonateDialogState extends State<DonateDialog> {
-  var start;
-  var end;
+  String start = '';
+  String end = '';
+
+  Event getEvent(start, end) {
+    Event event = Event(
+      title: 'Donation to: ' + widget.name,
+      description: widget.obj["description"].replaceAll("\\n", "\n") + '\nDonation link: ' + widget.obj["donationUrl"],
+      startDate: DateTime.parse(start),
+      endDate: DateTime.parse(end),
+    );
+    return event;
+  }
+  
   
   @override
   Widget build(BuildContext context) {
@@ -71,7 +85,16 @@ class _DonateDialogState extends State<DonateDialog> {
             ElevatedButton(
                 child: Text("Submit"),
                 onPressed: () {
-                  // your code
+                  Add2Calendar.addEvent2Cal(getEvent(start, end));
+
+                  Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (ctx) => AfterDonationScreen(
+                                obj: widget.obj),
+                          ),
+                          (route) => false,
+                        );
                 })
           ],
         ),

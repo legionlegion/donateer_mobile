@@ -43,5 +43,8 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+
+	<key>NSCalendarsUsageDescription</key>
+	<string>Donateer</string>
 </dict>
 </plist>
