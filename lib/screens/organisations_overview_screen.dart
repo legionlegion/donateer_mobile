@@ -20,12 +20,23 @@ class OrganisationsOverviewScreen extends StatelessWidget {
               onPressed: () {},
             )
           ]),
+          /*
+          OutlinedButton(
+                    child: const Text('Filter'),
+                    onPressed: () {},
+                  ),
+                  
+          SingleChildScrollView(
+            child:
+          )
+          */
           Flexible(
             child: StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
                   .collection('Organisations')
                   .snapshots(),
               builder: (ctx, AsyncSnapshot streamSnapshot) {
+                if(streamSnapshot.hasData){
                 final documents = streamSnapshot.data.docs;
                 return ListView.builder(
                   itemCount: documents.length,
@@ -73,6 +84,10 @@ class OrganisationsOverviewScreen extends StatelessWidget {
                     ),
                   ),
                 );
+              }
+              else {
+                return CircularProgressIndicator();
+              }
               },
             ),
           )

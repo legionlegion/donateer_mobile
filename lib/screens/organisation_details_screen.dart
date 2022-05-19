@@ -1,7 +1,7 @@
 import 'package:donateer/widgets/donate_dialog.dart';
 import 'package:flutter/material.dart';
 
-import './organisations_overview_screen.dart';
+import './tabs_screen.dart';
 
 class OrganisationDetailsScreen extends StatefulWidget {
   final Map obj;
@@ -27,7 +27,7 @@ class _OrganisationDetailsScreenState extends State<OrganisationDetailsScreen> {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => OrganisationsOverviewScreen(),
+                    builder: (context) => TabsScreen(),
                   ),
                   (route) => false,
                 );

@@ -1,16 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import './screens/auth_screen.dart'; // to remove
-import './screens/register_details_screen.dart';
-import './screens/register_income_screen.dart';
-import './screens/organisations_overview_screen.dart';
-import './screens/organisation_details_screen.dart';
-import './screens/profile_screen.dart';
-import './screens/favourites_screen.dart';
 import './screens/login_screen.dart';
 import './screens/tabs_screen.dart';
 
@@ -28,45 +19,53 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Welcome to Flutter',
       theme: ThemeData(
-        primarySwatch: Colors.red,
-        primaryColor: HexColor('#FFFBFE'),
-        secondaryHeaderColor: HexColor('#FCEEEE'),
-        textTheme: TextTheme(
-          headline1: TextStyle(
-              fontSize: 32.0,
+          primarySwatch: Colors.red,
+          primaryColor: HexColor('#FFFBFE'),
+          secondaryHeaderColor: HexColor('#FCEEEE'),
+          textTheme: TextTheme(
+            headline1: TextStyle(
+                fontSize: 32.0,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Buenard',
+                color: Colors.red[900]), // page titles
+            headline2: const TextStyle(
+              fontSize: 14.0,
               fontWeight: FontWeight.bold,
-              fontFamily: 'Buenard',
-              color: Colors.red[900]), // page titles
-          headline2: const TextStyle(
-            fontSize: 14.0,
-            fontWeight: FontWeight.bold,
+            ),
+            //bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
           ),
-          //bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
-        ),
-        appBarTheme: AppBarTheme(
-            backgroundColor: Colors.white, 
-            foregroundColor: Colors.black),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            minimumSize: Size(double.infinity, 45),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            primary: Colors.black, //button color
-            onPrimary: Colors.white,
-          ),
-        ),
-        textButtonTheme: TextButtonThemeData(
-          style: ButtonStyle(
-            foregroundColor: MaterialStateProperty.all<Color>(
-              Colors.black,
+          appBarTheme: AppBarTheme(
+              backgroundColor: Colors.white, foregroundColor: Colors.black),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              minimumSize: Size(double.infinity, 45),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              primary: Colors.black, //button color
+              onPrimary: Colors.white,
             ),
           ),
-        ),
-      ),
+          textButtonTheme: TextButtonThemeData(
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all<Color>(
+                Colors.black,
+              ),
+            ),
+          ),
+          outlinedButtonTheme: OutlinedButtonThemeData(
+            style: OutlinedButton.styleFrom(
+              primary: Colors.black,
+              //padding: EdgeInsets.symmetric(horizontal: 15),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(50)),
+              ),
+            ),
+          )),
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (ctx, userSnapshot) {
-          if (userSnapshot.hasData || FirebaseAuth.instance.currentUser != null) {
+          if (userSnapshot.hasData ||
+              FirebaseAuth.instance.currentUser != null) {
             print("wtf");
             return TabsScreen();
           }
@@ -74,11 +73,6 @@ class MyApp extends StatelessWidget {
           return LoginScreen();
         },
       ),
-      routes: {
-        '/profile': (ctx) => ProfileScreen(),
-        '/favourite': (ctx) => FavouritesScreen(),
-        '/home': (ctx) => OrganisationsOverviewScreen(),
-      },
     );
   }
 }
