@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.red,
           primaryColor: HexColor('#FFFBFE'),
           secondaryHeaderColor: HexColor('#FCEEEE'),
+          primaryColorDark: HexColor('#7D5260'),
           textTheme: TextTheme(
             headline1: TextStyle(
                 fontSize: 32.0,
