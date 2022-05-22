@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -5,8 +6,9 @@ import './organisation_details_screen.dart';
 
 class AfterDonationScreen extends StatelessWidget {
   final Map obj;
+  final User user;
 
-  AfterDonationScreen({Key? key, required this.obj}) : super(key: key);
+  AfterDonationScreen({Key? key, required this.obj, required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class AfterDonationScreen extends StatelessWidget {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => OrganisationDetailsScreen(obj: obj),
+                    builder: (context) => OrganisationDetailsScreen(obj: obj, user: user),
                   ),
                   (route) => false,
                 );

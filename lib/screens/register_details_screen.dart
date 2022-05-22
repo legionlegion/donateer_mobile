@@ -9,9 +9,9 @@ class RegisterDetailsScreen extends StatefulWidget {
 
 class _RegisterDetailsScreenState extends State<RegisterDetailsScreen> {
   final _formKey = GlobalKey<FormState>();
-  var _userEmail = '';
-  var _userName = '';
-  var _userPassword = '';
+  final _emailTextController = TextEditingController();
+  final _usernameController = TextEditingController();
+  final _passwordTextController = TextEditingController();
 
   void _trySubmit() {
     final isValid = _formKey.currentState!.validate();
@@ -23,9 +23,9 @@ class _RegisterDetailsScreenState extends State<RegisterDetailsScreen> {
         context,
         MaterialPageRoute(
           builder: (context) => RegisterIncomeScreen(
-              userEmail: _userEmail,
-              userName: _userName,
-              userPassword: _userPassword),
+              userEmail: _emailTextController.text,
+              userName: _usernameController.text,
+              userPassword: _passwordTextController.text),
         ),
         (route) => false,
       );
@@ -60,9 +60,7 @@ class _RegisterDetailsScreenState extends State<RegisterDetailsScreen> {
                   decoration: InputDecoration(
                     labelText: 'Email address',
                   ),
-                  onSaved: (value) {
-                    _userEmail = value!;
-                  },
+                  controller: _emailTextController,
                 ),
                 TextFormField(
                   key: ValueKey('username'),
@@ -73,9 +71,7 @@ class _RegisterDetailsScreenState extends State<RegisterDetailsScreen> {
                     return null;
                   },
                   decoration: InputDecoration(labelText: 'Username'),
-                  onSaved: (value) {
-                    _userName = value!;
-                  },
+                  controller: _usernameController,
                 ),
                 TextFormField(
                   key: ValueKey('password'),
@@ -87,9 +83,7 @@ class _RegisterDetailsScreenState extends State<RegisterDetailsScreen> {
                   },
                   decoration: InputDecoration(labelText: 'Password'),
                   obscureText: true,
-                  onSaved: (value) {
-                    _userPassword = value!;
-                  },
+                  controller: _passwordTextController,
                 ),
                 SizedBox(height: 12),
                 ElevatedButton(

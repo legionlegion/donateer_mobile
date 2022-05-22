@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:add_2_calendar/add_2_calendar.dart';
@@ -7,11 +8,11 @@ import '../screens/after_donation_screen.dart';
 class DonateDialog extends StatefulWidget {
   final String name;
   final Map obj;
+  final User user;
 
-  DonateDialog({
-    Key? key,
-    required this.name, required this.obj
-  }) : super(key: key);
+  DonateDialog(
+      {Key? key, required this.name, required this.obj, required this.user})
+      : super(key: key);
 
   @override
   _DonateDialogState createState() => _DonateDialogState();
@@ -24,14 +25,15 @@ class _DonateDialogState extends State<DonateDialog> {
   Event getEvent(start, end) {
     Event event = Event(
       title: 'Donation to: ' + widget.name,
-      description: widget.obj["description"].replaceAll("\\n", "\n") + '\nDonation link: ' + widget.obj["donationUrl"],
+      description: widget.obj["description"].replaceAll("\\n", "\n") +
+          '\nDonation link: ' +
+          widget.obj["donationUrl"],
       startDate: DateTime.parse(start),
       endDate: DateTime.parse(end),
     );
     return event;
   }
-  
-  
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -62,7 +64,6 @@ class _DonateDialogState extends State<DonateDialog> {
                   style: TextStyle(color: Colors.blue[900]),
                 )),
             Text(start == null ? '' : '${start}'),
-          
             TextButton(
                 onPressed: () {
                   DatePicker.showDateTimePicker(
@@ -88,13 +89,15 @@ class _DonateDialogState extends State<DonateDialog> {
                   Add2Calendar.addEvent2Cal(getEvent(start, end));
 
                   Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (ctx) => AfterDonationScreen(
-                                obj: widget.obj),
-                          ),
-                          (route) => false,
-                        );
+                    context,
+                    MaterialPageRoute(
+                      builder: (ctx) => AfterDonationScreen(
+                        obj: widget.obj,
+                        user: widget.user,
+                      ),
+                    ),
+                    (route) => false,
+                  );
                 })
           ],
         ),

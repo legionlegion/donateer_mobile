@@ -1,9 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import './organisation_details_screen.dart';
 
 class OrganisationsOverviewScreen extends StatelessWidget {
+  final User user;
+
+  OrganisationsOverviewScreen(this.user);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -25,9 +29,7 @@ class OrganisationsOverviewScreen extends StatelessWidget {
               OutlinedButton.icon(
                 label: const Text('Filter'),
                 icon: Icon(Icons.filter_alt_outlined),
-                onPressed: () {
-                  
-                },
+                onPressed: () {},
               ),
             ],
           ),
@@ -47,7 +49,9 @@ class OrganisationsOverviewScreen extends StatelessWidget {
                           ctx,
                           MaterialPageRoute(
                             builder: (ctx) => OrganisationDetailsScreen(
-                                obj: documents[index].data()),
+                              obj: documents[index].data(),
+                              user: user,
+                            ),
                           ),
                           (route) => false,
                         );

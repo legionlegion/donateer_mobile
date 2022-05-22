@@ -1,12 +1,14 @@
 import 'package:donateer/widgets/donate_dialog.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import './tabs_screen.dart';
 
 class OrganisationDetailsScreen extends StatefulWidget {
   final Map obj;
+  final User user;
 
-  const OrganisationDetailsScreen({Key? key, required this.obj})
+  const OrganisationDetailsScreen({Key? key, required this.obj, required this.user})
       : super(key: key);
 
   @override
@@ -27,7 +29,7 @@ class _OrganisationDetailsScreenState extends State<OrganisationDetailsScreen> {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => TabsScreen(),
+                    builder: (context) => TabsScreen(widget.user),
                   ),
                   (route) => false,
                 );
@@ -93,7 +95,7 @@ class _OrganisationDetailsScreenState extends State<OrganisationDetailsScreen> {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return DonateDialog(name: widget.obj['name'], obj: widget.obj);
+                            return DonateDialog(name: widget.obj['name'], obj: widget.obj, user: widget.user);
                           },
                         );
                       },

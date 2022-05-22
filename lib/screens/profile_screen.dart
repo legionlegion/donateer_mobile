@@ -5,7 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import './login_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
-  final user = FirebaseAuth.instance.currentUser!.displayName;
+  final User user;
+
+  ProfileScreen(this.user);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class ProfileScreen extends StatelessWidget {
                 foregroundColor: Colors.white,
                 radius: 40,
                 child: Text(
-                  user![0],
+                  user.displayName![0],
                   style: TextStyle(
                     fontSize: 30.0,
                   ),
@@ -46,7 +48,7 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(width: 30),
               Column(
                 children: [
-                  Text(user!,
+                  Text(user.displayName!,
                       style: TextStyle(
                         fontSize: 18.0,
                         fontWeight: FontWeight.bold,

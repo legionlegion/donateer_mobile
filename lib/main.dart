@@ -22,7 +22,6 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.red,
           primaryColor: HexColor('#FFFBFE'),
           secondaryHeaderColor: HexColor('#FCEEEE'),
-          primaryColorDark: HexColor('#7D5260'),
           textTheme: TextTheme(
             headline1: TextStyle(
                 fontSize: 32.0,
@@ -62,18 +61,19 @@ class MyApp extends StatelessWidget {
               ),
             ),
           )),
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (ctx, userSnapshot) {
-          if (userSnapshot.hasData ||
-              FirebaseAuth.instance.currentUser != null) {
-            print("wtf");
-            return TabsScreen();
-          }
-          print("here");
-          return LoginScreen();
-        },
-      ),
+      // home: StreamBuilder(
+      //   stream: FirebaseAuth.instance.authStateChanges(),
+      //   builder: (ctx, userSnapshot) {
+      //     if (userSnapshot.hasData ||
+      //         FirebaseAuth.instance.currentUser != null) {
+      //       print("wtf");
+      //       return TabsScreen();
+      //     }
+      //     print("here");
+      //     return LoginScreen();
+      //   },
+      // ),
+      home: LoginScreen(),
     );
   }
 }

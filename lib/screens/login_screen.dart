@@ -1,3 +1,6 @@
+import 'package:donateer/screens/profile_screen.dart';
+import 'package:donateer/screens/tabs_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -10,8 +13,11 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  var _userEmail = '';
-  var _userPassword = '';
+  final _emailTextController = TextEditingController();
+  final _passwordTextController = TextEditingController();
+
+  final _focusEmail = FocusNode();
+  final _focusPassword = FocusNode();
 
   void _trySubmit() {
     final isValid = _formKey.currentState!.validate();
@@ -20,6 +26,24 @@ class _LoginScreenState extends State<LoginScreen> {
     if (isValid) {
       _formKey.currentState!.save();
     }
+  }
+
+  Future<FirebaseApp> _initializeFirebase() async {
+    FirebaseApp firebaseApp = await Firebase.initializeApp();
+
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => TabsScreen(
+            user,
+          ),
+        ),
+      );
+    }
+
+    return firebaseApp;
   }
 
   @override
@@ -52,9 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: InputDecoration(
                     labelText: 'Email address',
                   ),
-                  onSaved: (value) {
-                    _userEmail = value!;
-                  },
+                  controller: _emailTextController,
                 ),
                 TextFormField(
                   key: ValueKey('password'),
@@ -66,18 +88,32 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   decoration: InputDecoration(labelText: 'Password'),
                   obscureText: true,
-                  onSaved: (value) {
-                    _userPassword = value!;
-                  },
+                  controller: _passwordTextController,
                 ),
                 SizedBox(height: 12),
                 ElevatedButton(
                   child: Text('Log in'),
-                  onPressed: () async { 
+                  onPressed: () async {
                     _trySubmit();
-                    UserCredential authResult = await FirebaseAuth.instance
-                        .signInWithEmailAndPassword(
-                            email: _userEmail, password: _userPassword);
+                    // UserCredential authResult =
+                    //     await FirebaseAuth.instance.signInWithEmailAndPassword(
+                    //   email: _emailTextController.text,
+                    //   password: _passwordTextController.text,
+                    // );
+
+                    User? user =
+                        await FirebaseAuth.instance.signInWithEmailAndPassword(
+                      email: _emailTextController.text,
+                      password: _passwordTextController.text,
+                    ).then((UserCredential userCredential) {return userCredential.user});
+
+                    if (user != null) {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => TabsScreen(user),
+                        ),
+                      );
+                    }
                   },
                 ),
                 TextButton(

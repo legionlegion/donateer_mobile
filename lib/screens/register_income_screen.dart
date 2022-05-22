@@ -1,3 +1,4 @@
+import 'package:donateer/screens/tabs_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -79,29 +80,31 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
                   ElevatedButton(
                     child: Text('Finish'),
                     onPressed: () async {
-                      
-                      UserCredential authResult = await FirebaseAuth.instance
+
+                      User? user = await FirebaseAuth.instance
                           .createUserWithEmailAndPassword(
                               email: widget.userEmail,
-                              password: widget.userPassword);
-                      authResult.user!.updateDisplayName(widget.userName);
+                              password: widget.userPassword)
+                          .then((UserCredential userCredential) {return userCredential.user});
+                      user!.updateDisplayName(widget.userName);
+
                       await FirebaseFirestore.instance
                           .collection('Users')
-                          .doc(authResult.user!.uid)
+                          .doc(user.uid)
                           .set({
                         'username': widget.userName,
                         'email': widget.userEmail,
                         'income': _dropdownvalue,
                       });
-                      /*
-                      Navigator.push(
-                        context,
+
+                      Navigator.of(context)
+                          .pushAndRemoveUntil(
                         MaterialPageRoute(
-                          builder: (context) => LoginScreen(),
+                          builder: (context) =>
+                              TabsScreen(user),
                         ),
+                        ModalRoute.withName('/'),
                       );
-                      */
-                      
                     },
                   ),
                 ],
