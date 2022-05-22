@@ -12,6 +12,7 @@ class ProfileScreen extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(22),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -57,7 +58,58 @@ class ProfileScreen extends StatelessWidget {
                 ],
               )
             ],
-          )
+          ),
+          const SizedBox(height: 30),
+          Card(
+            color: Theme.of(context).secondaryHeaderColor,
+            child: Column(
+              children: [
+                ListTile(
+                    leading: Padding(
+                        padding: EdgeInsets.all(5),
+                        child: Image.asset('assets/images/progress.png')),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.arrow_forward_ios),
+                      onPressed: () {},
+                    ),
+                    title: Text(
+                      'My Progress',
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )),
+              ],
+            ),
+          ),
+          
+          const SizedBox(height: 15),
+          Text('SUPPORT'),
+          const SizedBox(height: 5),
+          Card(
+            child: Column(
+              children: [
+                ListTile(
+                    trailing: IconButton(
+                      icon: const Icon(Icons.chevron_right),
+                      onPressed: () {},
+                    ),
+                    title: Text('CONTACT US',
+                        style: const TextStyle(
+                          fontSize: 14.0,
+                        ))),
+                ListTile(
+                    trailing: IconButton(
+                      icon: const Icon(Icons.chevron_right),
+                      onPressed: () {},
+                    ),
+                    title: Text('FAQ',
+                        style: const TextStyle(
+                          fontSize: 14.0,
+                        )))
+              ],
+            ),
+          ),
         ],
       ),
     );
