@@ -8,8 +8,11 @@ class OrganisationsOverviewScreen extends StatelessWidget {
   final User user;
 
   OrganisationsOverviewScreen(this.user);
+
   @override
   Widget build(BuildContext context) {
+    print("RECEIVED USER:");
+    print(user);
     return Padding(
       padding: EdgeInsets.all(14),
       child: Column(

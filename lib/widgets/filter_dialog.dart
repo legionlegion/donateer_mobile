@@ -34,7 +34,6 @@ class _FilterDialogState extends State<FilterDialog> {
         child: Column(
           children: <Widget>[
             const Text('CATEGORIES'),
-
             const Text('TAX'),
             ListTile(
               title: const Text("Tax Deductible"),

@@ -1,6 +1,8 @@
+import 'package:donateer/provider/google_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 import './screens/login_screen.dart';
 import './screens/tabs_screen.dart';
@@ -16,64 +18,67 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Welcome to Flutter',
-      theme: ThemeData(
-          primarySwatch: Colors.red,
-          primaryColor: HexColor('#FFFBFE'),
-          secondaryHeaderColor: HexColor('#FCEEEE'),
-          textTheme: TextTheme(
-            headline1: TextStyle(
-                fontSize: 32.0,
+    return ChangeNotifierProvider(
+      create: (context) => GoogleSignInProvider(),
+      child: MaterialApp(
+        title: 'Welcome to Flutter',
+        theme: ThemeData(
+            primarySwatch: Colors.red,
+            primaryColor: HexColor('#FFFBFE'),
+            secondaryHeaderColor: HexColor('#FCEEEE'),
+            textTheme: TextTheme(
+              headline1: TextStyle(
+                  fontSize: 32.0,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Buenard',
+                  color: Colors.red[900]), // page titles
+              headline2: const TextStyle(
+                fontSize: 14.0,
                 fontWeight: FontWeight.bold,
-                fontFamily: 'Buenard',
-                color: Colors.red[900]), // page titles
-            headline2: const TextStyle(
-              fontSize: 14.0,
-              fontWeight: FontWeight.bold,
+              ),
+              //bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
             ),
-            //bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
-          ),
-          appBarTheme: AppBarTheme(
-              backgroundColor: Colors.white, foregroundColor: Colors.black),
-          elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(double.infinity, 45),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              primary: Colors.black, //button color
-              onPrimary: Colors.white,
-            ),
-          ),
-          textButtonTheme: TextButtonThemeData(
-            style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all<Color>(
-                Colors.black,
+            appBarTheme: AppBarTheme(
+                backgroundColor: Colors.white, foregroundColor: Colors.black),
+            elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(double.infinity, 45),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                primary: Colors.black, //button color
+                onPrimary: Colors.white,
               ),
             ),
-          ),
-          outlinedButtonTheme: OutlinedButtonThemeData(
-            style: OutlinedButton.styleFrom(
-              primary: Colors.black,
-              //padding: EdgeInsets.symmetric(horizontal: 15),
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(50)),
+            textButtonTheme: TextButtonThemeData(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(
+                  Colors.black,
+                ),
               ),
             ),
-          )),
-      // home: StreamBuilder(
-      //   stream: FirebaseAuth.instance.authStateChanges(),
-      //   builder: (ctx, userSnapshot) {
-      //     if (userSnapshot.hasData ||
-      //         FirebaseAuth.instance.currentUser != null) {
-      //       print("wtf");
-      //       return TabsScreen();
-      //     }
-      //     print("here");
-      //     return LoginScreen();
-      //   },
-      // ),
-      home: LoginScreen(),
+            outlinedButtonTheme: OutlinedButtonThemeData(
+              style: OutlinedButton.styleFrom(
+                primary: Colors.black,
+                //padding: EdgeInsets.symmetric(horizontal: 15),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                ),
+              ),
+            )),
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (ctx, userSnapshot) {
+            if (userSnapshot.hasData ||
+                FirebaseAuth.instance.currentUser != null) {
+              print("wtf");
+              return TabsScreen(FirebaseAuth.instance.currentUser);
+            }
+            print("here");
+            return LoginScreen();
+          },
+        ),
+        // home: LoginScreen(),
+      ),
     );
   }
 }

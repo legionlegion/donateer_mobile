@@ -84,7 +84,6 @@ class ProfileScreen extends StatelessWidget {
               ],
             ),
           ),
-          
           const SizedBox(height: 15),
           Text('SUPPORT'),
           const SizedBox(height: 5),

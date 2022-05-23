@@ -53,7 +53,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '168480091349',
     projectId: 'donateer-e69f9',
     storageBucket: 'donateer-e69f9.appspot.com',
-    iosClientId: '168480091349-qt7q1ldjnff3cpeurrcur5kstvmqjlp7.apps.googleusercontent.com',
+    iosClientId:
+        '168480091349-qt7q1ldjnff3cpeurrcur5kstvmqjlp7.apps.googleusercontent.com',
     iosBundleId: 'com.example.donateer',
   );
 }

@@ -8,7 +8,8 @@ class AfterDonationScreen extends StatelessWidget {
   final Map obj;
   final User user;
 
-  AfterDonationScreen({Key? key, required this.obj, required this.user}) : super(key: key);
+  AfterDonationScreen({Key? key, required this.obj, required this.user})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,8 @@ class AfterDonationScreen extends StatelessWidget {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => OrganisationDetailsScreen(obj: obj, user: user),
+                    builder: (context) =>
+                        OrganisationDetailsScreen(obj: obj, user: user),
                   ),
                   (route) => false,
                 );

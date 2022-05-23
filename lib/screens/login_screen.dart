@@ -1,8 +1,12 @@
+import 'package:donateer/provider/google_sign_in.dart';
 import 'package:donateer/screens/profile_screen.dart';
 import 'package:donateer/screens/tabs_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 
 import './register_details_screen.dart';
 
@@ -116,11 +120,33 @@ class _LoginScreenState extends State<LoginScreen> {
                     }
                   },
                 ),
+                SizedBox(height: 5),
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.black,
+                    onPrimary: Colors.white,
+                    minimumSize: Size(double.infinity,50),
+                  ), 
+                  icon: FaIcon(FontAwesomeIcons.google, color: Colors.white,),
+                  label: Text('Sign In with Google'), 
+                  onPressed: () {
+                    final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+                    provider.googleLogin().then((user) => {
+                      if (user != null) {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => TabsScreen(user),
+                          ),
+                        ),
+                      }
+                    });
+                  },
+                ),
                 TextButton(
                   child: Text('Create an account',
                       style: TextStyle(
                         decoration: TextDecoration.underline,
-                      )),
+                      ),),
                   onPressed: () {
                     Navigator.push(
                       context,

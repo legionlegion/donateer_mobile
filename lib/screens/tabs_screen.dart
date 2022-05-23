@@ -22,6 +22,8 @@ class _TabsScreenState extends State<TabsScreen> {
   int _selectedPageIndex = 0;
 
   void _selectPage(int index) {
+    print("RECEIVED USER:");
+    print(widget.user);
     setState(() {
       _selectedPageIndex = index;
     });
@@ -29,6 +31,8 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("RECEIVED USER:");
+    print(widget.user);
     List<Widget> _pages = [
       OrganisationsOverviewScreen(widget.user),
       FavouritesScreen(),

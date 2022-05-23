@@ -8,7 +8,8 @@ class OrganisationDetailsScreen extends StatefulWidget {
   final Map obj;
   final User user;
 
-  const OrganisationDetailsScreen({Key? key, required this.obj, required this.user})
+  const OrganisationDetailsScreen(
+      {Key? key, required this.obj, required this.user})
       : super(key: key);
 
   @override
@@ -17,8 +18,6 @@ class OrganisationDetailsScreen extends StatefulWidget {
 }
 
 class _OrganisationDetailsScreenState extends State<OrganisationDetailsScreen> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,7 +94,10 @@ class _OrganisationDetailsScreenState extends State<OrganisationDetailsScreen> {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return DonateDialog(name: widget.obj['name'], obj: widget.obj, user: widget.user);
+                            return DonateDialog(
+                                name: widget.obj['name'],
+                                obj: widget.obj,
+                                user: widget.user);
                           },
                         );
                       },

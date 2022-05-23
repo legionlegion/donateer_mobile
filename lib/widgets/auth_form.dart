@@ -40,87 +40,89 @@ class _AuthFormState extends State<AuthForm> {
   @override
   Widget build(BuildContext context) {
     return Card(
-        margin: EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text('— OR —'),
-                  SizedBox(height: 12),
-                  Text('Continue with your email'),
+      margin: EdgeInsets.all(20),
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text('— OR —'),
+                SizedBox(height: 12),
+                Text('Continue with your email'),
+                TextFormField(
+                  key: ValueKey('email'),
+                  validator: (value) {
+                    if (value!.isEmpty || !value.contains('@')) {
+                      return 'Please enter a valid email address.';
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    labelText: 'Email address',
+                  ),
+                  onSaved: (value) {
+                    _userEmail = value!;
+                  },
+                ),
+                if (!_isLogin)
                   TextFormField(
-                    key: ValueKey('email'),
+                    key: ValueKey('username'),
                     validator: (value) {
-                      if (value!.isEmpty || !value.contains('@')) {
-                        return 'Please enter a valid email address.';
+                      if (value!.isEmpty || value.length < 4) {
+                        return 'Please enter at least 4 characters';
                       }
                       return null;
                     },
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
-                      labelText: 'Email address',
-                    ),
+                    decoration: InputDecoration(labelText: 'Username'),
                     onSaved: (value) {
-                      _userEmail = value!;
+                      _userName = value!;
                     },
                   ),
-                  if (!_isLogin)
-                    TextFormField(
-                      key: ValueKey('username'),
-                      validator: (value) {
-                        if (value!.isEmpty || value.length < 4) {
-                          return 'Please enter at least 4 characters';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(labelText: 'Username'),
-                      onSaved: (value) {
-                        _userName = value!;
-                      },
-                    ),
-                  TextFormField(
-                    key: ValueKey('password'),
-                    validator: (value) {
-                      if (value!.isEmpty || value.length < 7) {
-                        return 'Password must be at least 7 characters long.';
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(labelText: 'Password'),
-                    obscureText: true,
-                    onSaved: (value) {
-                      _userPassword = value!;
-                    },
+                TextFormField(
+                  key: ValueKey('password'),
+                  validator: (value) {
+                    if (value!.isEmpty || value.length < 7) {
+                      return 'Password must be at least 7 characters long.';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(labelText: 'Password'),
+                  obscureText: true,
+                  onSaved: (value) {
+                    _userPassword = value!;
+                  },
+                ),
+                SizedBox(height: 12),
+                if (widget.isLoading) CircularProgressIndicator(),
+                if (!widget.isLoading)
+                  ElevatedButton(
+                    child: Text(_isLogin ? 'Login' : 'Signup'),
+                    onPressed: _trySubmit,
                   ),
-                  SizedBox(height: 12),
-                  if (widget.isLoading) CircularProgressIndicator(),
-                  if (!widget.isLoading)
-                    ElevatedButton(
-                      child: Text(_isLogin ? 'Login' : 'Signup'),
-                      onPressed: _trySubmit,
-                    ),
-                  if (!widget.isLoading)
-                    TextButton(
-                      
-                      child: Text(_isLogin
-                          ? 'Create new account?'
-                          : 'Already have an account? Log In',
-                          style: TextStyle(decoration:TextDecoration.underline,)),
-                      onPressed: () {
-                        setState(() {
-                          _isLogin = !_isLogin;
-                        });
-                      },
-                    )
-                ],
-              ),
+                if (!widget.isLoading)
+                  TextButton(
+                    child: Text(
+                        _isLogin
+                            ? 'Create new account?'
+                            : 'Already have an account? Log In',
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                        )),
+                    onPressed: () {
+                      setState(() {
+                        _isLogin = !_isLogin;
+                      });
+                    },
+                  )
+              ],
             ),
           ),
         ),
+      ),
     );
   }
 }

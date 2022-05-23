@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:donateer/screens/tabs_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -86,8 +88,7 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
                               email: widget.userEmail,
                               password: widget.userPassword)
                           .then((UserCredential userCredential) {return userCredential.user});
-                      user!.updateDisplayName(widget.userName);
-
+                      await user!.updateDisplayName(widget.userName).then((value) => null);
                       await FirebaseFirestore.instance
                           .collection('Users')
                           .doc(user.uid)
@@ -96,8 +97,9 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
                         'email': widget.userEmail,
                         'income': _dropdownvalue,
                       });
-
-                      Navigator.of(context)
+                      var duration = Duration(seconds: 20);
+                      Timer(duration, () {
+                         Navigator.of(context)
                           .pushAndRemoveUntil(
                         MaterialPageRoute(
                           builder: (context) =>
@@ -105,6 +107,8 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
                         ),
                         ModalRoute.withName('/'),
                       );
+                      });
+
                     },
                   ),
                 ],
