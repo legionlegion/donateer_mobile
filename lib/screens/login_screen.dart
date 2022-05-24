@@ -1,5 +1,4 @@
 import 'package:donateer/provider/google_sign_in.dart';
-import 'package:donateer/screens/profile_screen.dart';
 import 'package:donateer/screens/register_income_screen.dart';
 import 'package:donateer/screens/tabs_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -53,6 +52,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        child: Container(
+      height: MediaQuery.of(context).size.height,
         child: Padding(
           padding: EdgeInsets.all(22),
           child: Form(
@@ -64,6 +65,28 @@ class _LoginScreenState extends State<LoginScreen> {
                 Text('Welcome back.\nLogin to your account',
                     style: Theme.of(context).textTheme.headline1),
                 SizedBox(height: 30),
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.white,
+                    onPrimary: Colors.black,
+                    minimumSize: Size(double.infinity,50),
+                  ), 
+                  icon: FaIcon(FontAwesomeIcons.google, color: Colors.red[400],),
+                  label: Text('Sign In with Google'), 
+                  onPressed: () {
+                    final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+                    provider.googleLogin().then((user) => {
+                      if (user != null) {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => RegisterIncomeScreen(user: user,),
+                          ),
+                        ),
+                      }
+                    });
+                  },
+                ),
+                SizedBox(height: 15),
                 Text('— OR —'),
                 SizedBox(height: 12),
                 Text('Continue with your email'),
@@ -93,17 +116,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   obscureText: true,
                   controller: _passwordTextController,
                 ),
-                SizedBox(height: 12),
+                Spacer(),
                 ElevatedButton(
                   child: Text('Log in'),
                   onPressed: () async {
                     _trySubmit();
-                    // UserCredential authResult =
-                    //     await FirebaseAuth.instance.signInWithEmailAndPassword(
-                    //   email: _emailTextController.text,
-                    //   password: _passwordTextController.text,
-                    // );
-
                     User? user =
                         await FirebaseAuth.instance.signInWithEmailAndPassword(
                       email: _emailTextController.text,
@@ -117,28 +134,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       );
                     }
-                  },
-                ),
-                SizedBox(height: 5),
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.black,
-                    onPrimary: Colors.white,
-                    minimumSize: Size(double.infinity,50),
-                  ), 
-                  icon: FaIcon(FontAwesomeIcons.google, color: Colors.white,),
-                  label: Text('Sign In with Google'), 
-                  onPressed: () {
-                    final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
-                    provider.googleLogin().then((user) => {
-                      if (user != null) {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => RegisterIncomeScreen(user: user,),
-                          ),
-                        ),
-                      }
-                    });
                   },
                 ),
                 TextButton(
@@ -159,6 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ),
+      ),
       ),
     );
   }

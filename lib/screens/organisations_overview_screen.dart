@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import './organisation_details_screen.dart';
+import '../widgets/filter_dialog.dart';
 
 class OrganisationsOverviewScreen extends StatelessWidget {
   User? user = FirebaseAuth.instance.currentUser;
@@ -32,7 +33,14 @@ class OrganisationsOverviewScreen extends StatelessWidget {
               OutlinedButton.icon(
                 label: const Text('Filter'),
                 icon: Icon(Icons.filter_alt_outlined),
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return FilterDialog();
+                          },
+                        );
+                },
               ),
             ],
           ),

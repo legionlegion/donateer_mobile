@@ -28,12 +28,30 @@ class _FilterDialogState extends State<FilterDialog> {
     return AlertDialog(
       backgroundColor: Theme.of(context).secondaryHeaderColor,
       scrollable: true,
-      title: const Text('Filter by'),
-      content: Padding(
-        padding: const EdgeInsets.all(8.0),
+      title: const Text('Filter by', textAlign: TextAlign.center),
+      content: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const Text('CATEGORIES'),
+            Expanded(
+              child: ListView.builder(
+                padding: EdgeInsets.all(0.0),
+                itemCount: categories.length,
+                itemBuilder: (context, index) {
+                  return RadioListTile<String>(
+                      title: Text(categories[index]),
+                      value: categories[index],
+                      groupValue: category,
+                      onChanged: (value) {
+                        setState(() {
+                          category = value as String;
+                        });
+                      });
+                },
+              ),
+            ),
+            const SizedBox(height: 15),
             const Text('TAX'),
             ListTile(
               title: const Text("Tax Deductible"),
