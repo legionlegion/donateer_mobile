@@ -8,12 +8,10 @@ import '../screens/after_donation_screen.dart';
 class DonateDialog extends StatefulWidget {
   final String name;
   final Map obj;
-  final User user;
 
   DonateDialog(
-      {Key? key, required this.name, required this.obj, required this.user})
+      {Key? key, required this.name, required this.obj})
       : super(key: key);
-
   @override
   _DonateDialogState createState() => _DonateDialogState();
 }
@@ -21,6 +19,7 @@ class DonateDialog extends StatefulWidget {
 class _DonateDialogState extends State<DonateDialog> {
   String start = '';
   String end = '';
+  User? user = FirebaseAuth.instance.currentUser;
 
   Event getEvent(start, end) {
     Event event = Event(
@@ -92,8 +91,7 @@ class _DonateDialogState extends State<DonateDialog> {
                     context,
                     MaterialPageRoute(
                       builder: (ctx) => AfterDonationScreen(
-                        obj: widget.obj,
-                        user: widget.user,
+                        obj: widget.obj
                       ),
                     ),
                     (route) => false,

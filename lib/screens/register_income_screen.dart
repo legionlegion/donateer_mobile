@@ -10,14 +10,16 @@ import './login_screen.dart';
 class RegisterIncomeScreen extends StatefulWidget {
   RegisterIncomeScreen({
     Key? key,
-    required this.userEmail,
-    required this.userName,
-    required this.userPassword,
+    this.userEmail,
+    this.userName,
+    this.userPassword,
+    this.user,
   }) : super(key: key);
 
-  final String userEmail;
-  final String userName;
-  final String userPassword;
+  String? userEmail;
+  String? userName;
+  String? userPassword;
+  User? user;
 
   @override
   _RegisterIncomeScreenState createState() => _RegisterIncomeScreenState();
@@ -26,6 +28,11 @@ class RegisterIncomeScreen extends StatefulWidget {
 class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
   String _dropdownvalue = 'Below \$1000';
   var _isLoading = false;
+  var isGoogleUser;
+
+  void initState() {
+    isGoogleUser = widget.user != null;
+  }
 
   // List of items in our dropdown menu
   var items = [
@@ -85,14 +92,15 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
                   ElevatedButton(
                     child: Text('Finish'),
                     onPressed: () async {
+                      if (!isGoogleUser) {
+                        User? user = await FirebaseAuth.instance
+                            .createUserWithEmailAndPassword(
+                                email: widget.userEmail!,
+                                password: widget.userPassword!)
+                            .then((UserCredential userCredential) {return userCredential.user});
+                        await user!.updateDisplayName(widget.userName).then((value) => null);
 
-                      User? user = await FirebaseAuth.instance
-                          .createUserWithEmailAndPassword(
-                              email: widget.userEmail,
-                              password: widget.userPassword)
-                          .then((UserCredential userCredential) {return userCredential.user});
-                      await user!.updateDisplayName(widget.userName).then((value) => null);
-                      await FirebaseFirestore.instance
+                        await FirebaseFirestore.instance
                           .collection('Users')
                           .doc(user.uid)
                           .set({
@@ -100,19 +108,24 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
                         'email': widget.userEmail,
                         'income': _dropdownvalue,
                       });
-
-                      var duration = Duration(seconds: 1);
-                      Timer(duration, () {
-                         Navigator.of(context)
-                          .pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              TabsScreen(user),
-                        ),
-                        ModalRoute.withName('/'),
+                      } else {
+                        await FirebaseFirestore.instance
+                          .collection('Users')
+                          .doc(widget.user!.uid)
+                          .set({
+                            'username': widget.userName,
+                            'email': widget.userEmail,
+                            'income': _dropdownvalue,
+                        });
+                      };
+                      Navigator.of(context)
+                        .pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                TabsScreen(),
+                          ),
+                          ModalRoute.withName('/'),
                       );
-                      });
-
                     },
                   ),
                 ],

@@ -1,5 +1,6 @@
 import 'package:donateer/provider/google_sign_in.dart';
 import 'package:donateer/screens/profile_screen.dart';
+import 'package:donateer/screens/register_income_screen.dart';
 import 'package:donateer/screens/tabs_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -40,9 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (user != null) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => TabsScreen(
-            user,
-          ),
+          builder: (context) => TabsScreen(),
         ),
       );
     }
@@ -114,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (user != null) {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
-                          builder: (context) => TabsScreen(user),
+                          builder: (context) => TabsScreen(),
                         ),
                       );
                     }
@@ -135,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (user != null) {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) => TabsScreen(user),
+                            builder: (context) => RegisterIncomeScreen(user: user,),
                           ),
                         ),
                       }

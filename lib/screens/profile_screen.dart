@@ -1,14 +1,17 @@
+import 'package:donateer/provider/google_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 
 import './login_screen.dart';
 import './progress_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
-  final User user;
+  User? user = FirebaseAuth.instance.currentUser;
 
-  ProfileScreen(this.user);
+  ProfileScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +31,23 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 IconButton(
                   icon: const Icon(Icons.exit_to_app),
-                  onPressed: () {
-                    FirebaseAuth.instance.signOut();
+                  onPressed: () async {
+                    final provider = Provider.of<GoogleSignInProvider>(
+                      context,
+                      listen: false,
+                    );
+                    // check if Google is used, if used then sign out
+                    final GoogleSignIn googleSignIn = new GoogleSignIn();
+                    googleSignIn.isSignedIn().then((s) {
+                      provider.logout();
+                    });
+                    await FirebaseAuth.instance.signOut();
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => LoginScreen(),
+                      ),
+                      ModalRoute.withName('/'),
+                    );
                   },
                 ),
               ],
@@ -42,7 +60,7 @@ class ProfileScreen extends StatelessWidget {
                   foregroundColor: Colors.white,
                   radius: 40,
                   child: Text(
-                    user.displayName![0],
+                    user!.displayName![0],
                     style: TextStyle(
                       fontSize: 30.0,
                     ),
@@ -51,7 +69,7 @@ class ProfileScreen extends StatelessWidget {
                 const SizedBox(width: 30),
                 Column(
                   children: [
-                    Text(user.displayName!,
+                    Text(user!.displayName!,
                         style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold,
