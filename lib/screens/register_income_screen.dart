@@ -50,9 +50,15 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
               padding: EdgeInsets.all(22),
               child: Column(
                 children: <Widget>[
-                  Text('Step 2/2:\nEnter your monthly income',
+                  Text('Step 2/2:\nLet’s help you set an estimate of your hourly income!',
                       style: Theme.of(context).textTheme.headline1),
                   SizedBox(height: 12),
+                  Text(
+                      'This information is needed to calculate how much money should be donated according to the number of hours you choose to volunteer. It is strictly confidential and will not be disclosed to any third-parties.',
+                      style: TextStyle(
+                        fontSize: 10.0,
+                      )),
+                  SizedBox(height: 15),    
                   ButtonTheme(
                     alignedDropdown: true,
                     child: DropdownButton(
@@ -73,11 +79,8 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
                     ),
                   ),
                   SizedBox(height: 12),
-                  Text(
-                      'This information is needed to calculate how much money should be donated according to the number of hours you choose to volunteer. It is strictly confidential and will not be disclosed to any third-parties.',
-                      style: TextStyle(
-                        fontSize: 10.0,
-                      )),
+                  Text('Estimated hourly income: \$${_dropdownvalue}'),
+                  
                   Spacer(),
                   ElevatedButton(
                     child: Text('Finish'),
@@ -97,7 +100,8 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
                         'email': widget.userEmail,
                         'income': _dropdownvalue,
                       });
-                      var duration = Duration(seconds: 20);
+
+                      var duration = Duration(seconds: 1);
                       Timer(duration, () {
                          Navigator.of(context)
                           .pushAndRemoveUntil(

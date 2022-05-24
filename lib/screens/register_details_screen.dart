@@ -36,76 +36,79 @@ class _RegisterDetailsScreenState extends State<RegisterDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(22),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  'Step 1/2:\nEnter your details \nto create an account',
-                  style: Theme.of(context).textTheme.headline1,
-                ),
-                SizedBox(height: 12),
-                TextFormField(
-                  key: ValueKey('email'),
-                  validator: (value) {
-                    if (value!.isEmpty || !value.contains('@')) {
-                      return 'Please enter a valid email address.';
-                    }
-                    return null;
-                  },
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    labelText: 'Email address',
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          child: Padding(
+            padding: EdgeInsets.all(22),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    'Step 1/2:\nEnter your details \nto create an account',
+                    style: Theme.of(context).textTheme.headline1,
                   ),
-                  controller: _emailTextController,
-                ),
-                TextFormField(
-                  key: ValueKey('username'),
-                  validator: (value) {
-                    if (value!.isEmpty || value.length < 4) {
-                      return 'Please enter at least 4 characters';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(labelText: 'Username'),
-                  controller: _usernameController,
-                ),
-                TextFormField(
-                  key: ValueKey('password'),
-                  validator: (value) {
-                    if (value!.isEmpty || value.length < 7) {
-                      return 'Password must be at least 7 characters long.';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(labelText: 'Password'),
-                  obscureText: true,
-                  controller: _passwordTextController,
-                ),
-                SizedBox(height: 12),
-                ElevatedButton(
-                  child: Text('Continue'),
-                  onPressed: _trySubmit,
-                ),
-                TextButton(
-                  child: Text('Already have an account? Log In',
-                      style: TextStyle(
-                        decoration: TextDecoration.underline,
-                      )),
-                  onPressed: () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LoginScreen(),
-                      ),
-                      (route) => false,
-                    );
-                  },
-                )
-              ],
+                  SizedBox(height: 12),
+                  TextFormField(
+                    key: ValueKey('email'),
+                    validator: (value) {
+                      if (value!.isEmpty || !value.contains('@')) {
+                        return 'Please enter a valid email address.';
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      labelText: 'Email address',
+                    ),
+                    controller: _emailTextController,
+                  ),
+                  TextFormField(
+                    key: ValueKey('username'),
+                    validator: (value) {
+                      if (value!.isEmpty || value.length < 4) {
+                        return 'Please enter at least 4 characters';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(labelText: 'Username'),
+                    controller: _usernameController,
+                  ),
+                  TextFormField(
+                    key: ValueKey('password'),
+                    validator: (value) {
+                      if (value!.isEmpty || value.length < 7) {
+                        return 'Password must be at least 7 characters long.';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(labelText: 'Password'),
+                    obscureText: true,
+                    controller: _passwordTextController,
+                  ),
+                  Spacer(),
+                  ElevatedButton(
+                    child: Text('Continue'),
+                    onPressed: _trySubmit,
+                  ),
+                  TextButton(
+                    child: Text('Already have an account? Log In',
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                        )),
+                    onPressed: () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginScreen(),
+                        ),
+                        (route) => false,
+                      );
+                    },
+                  )
+                ],
+              ),
             ),
           ),
         ),
