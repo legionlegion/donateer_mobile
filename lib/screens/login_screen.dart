@@ -40,9 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (user != null) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => TabsScreen(
-            user,
-          ),
+          builder: (context) => TabsScreen(),
         ),
       );
     }
@@ -114,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (user != null) {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
-                          builder: (context) => TabsScreen(user),
+                          builder: (context) => TabsScreen(),
                         ),
                       );
                     }
@@ -135,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (user != null) {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) => TabsScreen(user),
+                            builder: (context) => TabsScreen(),
                           ),
                         ),
                       }

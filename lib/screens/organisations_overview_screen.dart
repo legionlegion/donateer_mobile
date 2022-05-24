@@ -5,9 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import './organisation_details_screen.dart';
 
 class OrganisationsOverviewScreen extends StatelessWidget {
-  final User user;
+  User? user = FirebaseAuth.instance.currentUser;
 
-  OrganisationsOverviewScreen(this.user);
+  OrganisationsOverviewScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +52,7 @@ class OrganisationsOverviewScreen extends StatelessWidget {
                           ctx,
                           MaterialPageRoute(
                             builder: (ctx) => OrganisationDetailsScreen(
-                              obj: documents[index].data(),
-                              user: user,
+                              obj: documents[index].data()
                             ),
                           ),
                           (route) => false,

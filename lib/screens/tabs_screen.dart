@@ -7,14 +7,14 @@ import './profile_screen.dart';
 import './favourites_screen.dart';
 
 class TabsScreen extends StatefulWidget {
-  final user;
-  TabsScreen(this.user);
+  TabsScreen();
 
   @override
   _TabsScreenState createState() => _TabsScreenState();
 }
 
 class _TabsScreenState extends State<TabsScreen> {
+  User? user = FirebaseAuth.instance.currentUser;
   late List<Widget> _pages;
 
   void initState() {}
@@ -23,7 +23,7 @@ class _TabsScreenState extends State<TabsScreen> {
 
   void _selectPage(int index) {
     print("RECEIVED USER:");
-    print(widget.user);
+    print(user);
     setState(() {
       _selectedPageIndex = index;
     });
@@ -31,12 +31,10 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("RECEIVED USER:");
-    print(widget.user);
     List<Widget> _pages = [
-      OrganisationsOverviewScreen(widget.user),
+      OrganisationsOverviewScreen(),
       FavouritesScreen(),
-      ProfileScreen(widget.user),
+      ProfileScreen(),
     ];
     return Scaffold(
       body: _pages[_selectedPageIndex],

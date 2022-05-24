@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
             if (userSnapshot.hasData ||
                 FirebaseAuth.instance.currentUser != null) {
               print("wtf");
-              return TabsScreen(FirebaseAuth.instance.currentUser);
+              return TabsScreen();
             }
             print("here");
             return LoginScreen();

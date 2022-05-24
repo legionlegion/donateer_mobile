@@ -97,18 +97,15 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
                         'email': widget.userEmail,
                         'income': _dropdownvalue,
                       });
-                      var duration = Duration(seconds: 20);
-                      Timer(duration, () {
-                         Navigator.of(context)
-                          .pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              TabsScreen(user),
-                        ),
-                        ModalRoute.withName('/'),
-                      );
-                      });
 
+                      Navigator.of(context)
+                        .pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                TabsScreen(),
+                          ),
+                          ModalRoute.withName('/'),
+                      );
                     },
                   ),
                 ],

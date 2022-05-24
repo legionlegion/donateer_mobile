@@ -6,10 +6,10 @@ import './tabs_screen.dart';
 
 class OrganisationDetailsScreen extends StatefulWidget {
   final Map obj;
-  final User user;
+  User? user = FirebaseAuth.instance.currentUser;
 
-  const OrganisationDetailsScreen(
-      {Key? key, required this.obj, required this.user})
+  OrganisationDetailsScreen(
+      {Key? key, required this.obj})
       : super(key: key);
 
   @override
@@ -28,7 +28,7 @@ class _OrganisationDetailsScreenState extends State<OrganisationDetailsScreen> {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => TabsScreen(widget.user),
+                    builder: (context) => TabsScreen(),
                   ),
                   (route) => false,
                 );
@@ -96,8 +96,7 @@ class _OrganisationDetailsScreenState extends State<OrganisationDetailsScreen> {
                           builder: (BuildContext context) {
                             return DonateDialog(
                                 name: widget.obj['name'],
-                                obj: widget.obj,
-                                user: widget.user);
+                                obj: widget.obj);
                           },
                         );
                       },

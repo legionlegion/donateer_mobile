@@ -6,9 +6,9 @@ import './organisation_details_screen.dart';
 
 class AfterDonationScreen extends StatelessWidget {
   final Map obj;
-  final User user;
+  User? user = FirebaseAuth.instance.currentUser;
 
-  AfterDonationScreen({Key? key, required this.obj, required this.user})
+  AfterDonationScreen({Key? key, required this.obj})
       : super(key: key);
 
   @override
@@ -22,7 +22,7 @@ class AfterDonationScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        OrganisationDetailsScreen(obj: obj, user: user),
+                        OrganisationDetailsScreen(obj: obj),
                   ),
                   (route) => false,
                 );
