@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => GoogleSignInProvider(),
       child: MaterialApp(
-        title: 'Welcome to Flutter',
+        title: 'Donateer',
         theme: ThemeData(
             primarySwatch: Colors.red,
             primaryColor: HexColor('#FFFBFE'),
@@ -70,10 +70,8 @@ class MyApp extends StatelessWidget {
           builder: (ctx, userSnapshot) {
             if (userSnapshot.hasData ||
                 FirebaseAuth.instance.currentUser != null) {
-              print("wtf");
               return TabsScreen();
             }
-            print("here");
             return LoginScreen();
           },
         ),

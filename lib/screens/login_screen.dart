@@ -33,21 +33,22 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Future<FirebaseApp> _initializeFirebase() async {
-    FirebaseApp firebaseApp = await Firebase.initializeApp();
+  // Future<FirebaseApp> _initializeFirebase() async {
+  //   FirebaseApp firebaseApp = await Firebase.initializeApp();
 
-    User? user = FirebaseAuth.instance.currentUser;
+  //   User? user = FirebaseAuth.instance.currentUser;
 
-    if (user != null) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => TabsScreen(),
-        ),
-      );
-    }
+  //   if (user != null) {
+  //     Navigator.of(context).pushReplacement(
+  //       MaterialPageRoute(
+  //         builder: (context) => TabsScreen(),
+  //       ),
+  //     );
+  //   }
 
-    return firebaseApp;
-  }
+  //   return firebaseApp;
+  // }
+
 
   @override
   Widget build(BuildContext context) {
@@ -93,11 +94,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   label: Text('Sign In with Google'), 
                   onPressed: () {
                     final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
-                    provider.googleLogin().then((user) => {
-                      if (user != null) {
+                    provider.googleLogin().then((userCredential) => {
+                      // User exists and is a new Google user
+                      if (userCredential != null && userCredential.additionalUserInfo.isNewUser) {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) => RegisterIncomeScreen(user: user,),
+                            builder: (context) => RegisterIncomeScreen(user: userCredential.user,),
+                          ),
+                        ),
+                      } else {
+                        // Not a new Google user
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => TabsScreen(),
                           ),
                         ),
                       }
