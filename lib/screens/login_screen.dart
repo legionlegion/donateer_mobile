@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
@@ -65,11 +66,28 @@ class _LoginScreenState extends State<LoginScreen> {
                 Text('Welcome back.\nLogin to your account',
                     style: Theme.of(context).textTheme.headline1),
                 SizedBox(height: 30),
+                if (defaultTargetPlatform == TargetPlatform.iOS)
+                  ElevatedButton.icon(
+                    icon: FaIcon(FontAwesomeIcons.apple,),
+                    label: Text('Sign In with Apple'), 
+                    onPressed: () {
+                      final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+                      provider.googleLogin().then((user) => {
+                        if (user != null) {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => RegisterIncomeScreen(user: user,),
+                            ),
+                          ),
+                        }
+                      });
+                    },
+                  ),
+                
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                     primary: Colors.white,
                     onPrimary: Colors.black,
-                    minimumSize: Size(double.infinity,50),
                   ), 
                   icon: FaIcon(FontAwesomeIcons.google, color: Colors.red[400],),
                   label: Text('Sign In with Google'), 

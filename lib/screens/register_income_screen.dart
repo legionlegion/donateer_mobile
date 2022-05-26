@@ -1,11 +1,8 @@
-import 'dart:async';
-
 import 'package:donateer/screens/tabs_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import './profile_screen.dart';
-import './login_screen.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 class RegisterIncomeScreen extends StatefulWidget {
   RegisterIncomeScreen({
@@ -26,7 +23,7 @@ class RegisterIncomeScreen extends StatefulWidget {
 }
 
 class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
-  String _dropdownvalue = 'Below \$1000';
+  String _income = '';
   var _isLoading = false;
   var isGoogleUser;
 
@@ -59,34 +56,26 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
                 children: <Widget>[
                   Text('Step 2/2:\nLet’s help you set an estimate of your hourly income!',
                       style: Theme.of(context).textTheme.headline1),
-                  SizedBox(height: 12),
+                  SizedBox(height: 15),
                   Text(
                       'This information is needed to calculate how much money should be donated according to the number of hours you choose to volunteer. It is strictly confidential and will not be disclosed to any third-parties.',
-                      style: TextStyle(
-                        fontSize: 10.0,
-                      )),
-                  SizedBox(height: 15),    
-                  ButtonTheme(
-                    alignedDropdown: true,
-                    child: DropdownButton(
-                      value: _dropdownvalue,
-                      isExpanded: true,
-                      icon: const Icon(Icons.keyboard_arrow_down),
-                      items: items.map((String items) {
-                        return DropdownMenuItem(
-                          value: items,
-                          child: Text(items),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
+                      ),
+                  SizedBox(height: 20),    
+                
+                  Form( 
+                    child: TextField(
+                      onChanged: (value) {
                         setState(() {
-                          _dropdownvalue = newValue!;
+                          _income = ((int.parse(value) / 160).floor()).toString();
                         });
                       },
+                      decoration: InputDecoration(labelText: "Enter your monthly income"),
+                      keyboardType: TextInputType.number,
                     ),
                   ),
+                  
                   SizedBox(height: 12),
-                  Text('Estimated hourly income: \$${_dropdownvalue}'),
+                  Text('Estimated hourly income: \$${_income}'),
                   
                   Spacer(),
                   ElevatedButton(
@@ -106,7 +95,7 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
                           .set({
                         'username': widget.userName,
                         'email': widget.userEmail,
-                        'income': _dropdownvalue,
+                        'income': _income,
                       });
                       } else {
                         await FirebaseFirestore.instance
@@ -115,7 +104,7 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
                           .set({
                             'username': widget.userName,
                             'email': widget.userEmail,
-                            'income': _dropdownvalue,
+                            'income': _income,
                         });
                       };
                       Navigator.of(context)
