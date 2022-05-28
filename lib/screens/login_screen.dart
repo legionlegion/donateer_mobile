@@ -96,19 +96,21 @@ class _LoginScreenState extends State<LoginScreen> {
                     final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
                     provider.googleLogin().then((userCredential) => {
                       // User exists and is a new Google user
-                      if (userCredential != null && userCredential.additionalUserInfo.isNewUser) {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => RegisterIncomeScreen(user: userCredential.user,),
+                        if (userCredential != null) {
+                          if (userCredential.additionalUserInfo.isNewUser) {
+                          // Not a new Google user
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => TabsScreen(),
+                            ),
                           ),
-                        ),
-                      } else {
-                        // Not a new Google user
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => TabsScreen(),
+                        } else {
+                            Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => RegisterIncomeScreen(user: userCredential.user,),
+                            ),
                           ),
-                        ),
+                        } 
                       }
                     });
                   },
