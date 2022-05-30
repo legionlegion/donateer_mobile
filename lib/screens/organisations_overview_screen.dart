@@ -4,16 +4,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import './organisation_details_screen.dart';
 import '../widgets/filter_dialog.dart';
+import './tabs_screen.dart';
 
 class OrganisationsOverviewScreen extends StatelessWidget {
   User? user = FirebaseAuth.instance.currentUser;
+  final filter;
 
-  OrganisationsOverviewScreen();
+  OrganisationsOverviewScreen({Key? key, this.filter}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    print("RECEIVED USER:");
-    print(user);
     return Padding(
       padding: EdgeInsets.all(14),
       child: Column(
@@ -29,29 +29,58 @@ class OrganisationsOverviewScreen extends StatelessWidget {
             )
           ]),
           Row(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               OutlinedButton.icon(
                 label: const Text('Filter'),
                 icon: Icon(Icons.filter_alt_outlined),
                 onPressed: () {
                   showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return FilterDialog();
-                          },
-                        );
+                    context: context,
+                    builder: (BuildContext context) {
+                      return FilterDialog();
+                    },
+                  );
                 },
               ),
+              const SizedBox(width: 10),
+              Center(
+                child: Ink(
+                  width: 40,
+                  decoration: ShapeDecoration(
+                    color: Theme.of(context).secondaryHeaderColor,
+                    shape: const CircleBorder(),
+                  ),
+                  child: IconButton(
+                    icon: const Icon(Icons.filter_alt_off_outlined),
+                    iconSize: 19.0,
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => TabsScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
             ],
           ),
           Flexible(
             child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('Organisations')
-                  .snapshots(),
+              stream: (filter == null
+                  ? FirebaseFirestore.instance
+                      .collection('Organisations')
+                      .snapshots()
+                  : FirebaseFirestore.instance
+                      .collection('Organisations')
+                      .where('categories',
+                          arrayContainsAny: filter['categories'])
+                      .snapshots()),
               builder: (ctx, AsyncSnapshot streamSnapshot) {
                 if (streamSnapshot.hasData) {
-                  final documents = streamSnapshot.data.docs;
+                  var documents = streamSnapshot.data.docs;
                   return ListView.builder(
                     itemCount: documents.length,
                     itemBuilder: (ctx, index) => InkWell(
@@ -60,8 +89,7 @@ class OrganisationsOverviewScreen extends StatelessWidget {
                           ctx,
                           MaterialPageRoute(
                             builder: (ctx) => OrganisationDetailsScreen(
-                              obj: documents[index].data()
-                            ),
+                                obj: documents[index].data()),
                           ),
                           (route) => false,
                         );

@@ -1,13 +1,12 @@
 import 'package:donateer/screens/organisations_overview_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import './organisation_details_screen.dart';
 import './profile_screen.dart';
 import './favourites_screen.dart';
 
 class TabsScreen extends StatefulWidget {
-  TabsScreen();
+  final filter;
+  TabsScreen({Key? key, this.filter}) : super(key: key);
 
   @override
   _TabsScreenState createState() => _TabsScreenState();
@@ -32,7 +31,7 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _pages = [
-      OrganisationsOverviewScreen(),
+      OrganisationsOverviewScreen(filter: widget.filter),
       FavouritesScreen(),
       ProfileScreen(),
     ];

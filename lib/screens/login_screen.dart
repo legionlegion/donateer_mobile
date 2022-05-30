@@ -1,12 +1,12 @@
 import 'package:donateer/provider/google_sign_in.dart';
 import 'package:donateer/screens/register_income_screen.dart';
 import 'package:donateer/screens/tabs_screen.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:provider/provider.dart';
 
 import './register_details_screen.dart';
@@ -67,24 +67,22 @@ class _LoginScreenState extends State<LoginScreen> {
                 Text('Welcome back.\nLogin to your account',
                     style: Theme.of(context).textTheme.headline1),
                 SizedBox(height: 30),
+                /*
                 if (defaultTargetPlatform == TargetPlatform.iOS)
-                  ElevatedButton.icon(
-                    icon: FaIcon(FontAwesomeIcons.apple,),
-                    label: Text('Sign In with Apple'), 
-                    onPressed: () {
-                      final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
-                      provider.googleLogin().then((user) => {
-                        if (user != null) {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => RegisterIncomeScreen(user: user,),
-                            ),
-                          ),
-                        }
-                      });
+                  SignInWithAppleButton(
+                    onPressed: () async {
+                      final credential = await SignInWithApple.getAppleIDCredential(
+                        scopes: [
+                          AppleIDAuthorizationScopes.email,
+                          AppleIDAuthorizationScopes.fullName,
+                        ],
+                      );
+                      print(credential);
+                      // Now send the credential (especially `credential.authorizationCode`) to your server to create a session
+                      // after they have been validated with Apple (see `Integration` section for more information on how to do this)
                     },
                   ),
-                
+                  */
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                     primary: Colors.white,

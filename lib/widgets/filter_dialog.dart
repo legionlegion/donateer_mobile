@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import '../screens/tabs_screen.dart';
 
 class FilterDialog extends StatefulWidget {
+
+  FilterDialog({Key? key}) : super(key: key);
+
   @override
   _FilterDialogState createState() => _FilterDialogState();
 }
 
 class _FilterDialogState extends State<FilterDialog> {
-  String tax = '';
-  String category = '';
-  final categories = [
+  String selectedTax = '';
+  var selectedCategories = [];
+  final totalCategories = [
     "Animal",
     "Arts & Heritage",
     "Children",
@@ -22,6 +26,7 @@ class _FilterDialogState extends State<FilterDialog> {
     "Sports",
     "Women"
   ];
+  bool isSelected = false;
 
   @override
   Widget build(BuildContext context) {
@@ -29,66 +34,78 @@ class _FilterDialogState extends State<FilterDialog> {
       backgroundColor: Theme.of(context).secondaryHeaderColor,
       scrollable: true,
       title: const Text('Filter by', textAlign: TextAlign.center),
-      content: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const Text('CATEGORIES'),
-            Expanded(
-              child: ListView.builder(
-                padding: EdgeInsets.all(0.0),
-                itemCount: categories.length,
-                itemBuilder: (context, index) {
-                  return RadioListTile<String>(
-                      title: Text(categories[index]),
-                      value: categories[index],
-                      groupValue: category,
-                      onChanged: (value) {
-                        setState(() {
-                          category = value as String;
-                        });
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          const Text('CATEGORIES'),
+          Container(
+            height: 350.0,
+            width: double.maxFinite,
+            child: ListView.builder(
+              itemCount: totalCategories.length,
+              itemBuilder: (context, index) {
+                return CheckboxListTile(
+                    title: Text(totalCategories[index]),
+                    value: selectedCategories.contains(totalCategories[index]),
+                    onChanged: (value) {
+                      setState(() {
+                        if (value!) {
+                          selectedCategories.add(totalCategories[index]);
+                        } else {
+                          selectedCategories.remove(totalCategories[index]);
+                        }
                       });
-                },
-              ),
+                    });
+              },
             ),
-            const SizedBox(height: 15),
-            const Text('TAX'),
-            ListTile(
-              title: const Text("Tax Deductible"),
-              trailing: Radio(
-                value: "Tax Deductible",
-                groupValue: tax,
-                onChanged: (value) {
-                  setState(() {
-                    tax = value as String;
-                  });
-                },
-                //activeColor: Colors.green,
-              ),
+          ),
+          const SizedBox(height: 15),
+          const Text('TAX'),
+          ListTile(
+            title: const Text("Tax Deductible"),
+            trailing: Radio(
+              value: "Tax Deductible",
+              groupValue: selectedTax,
+              onChanged: (value) {
+                setState(() {
+                  selectedTax = value as String;
+                });
+              },
+              //activeColor: Colors.green,
             ),
-            ListTile(
-              title: const Text("Not Tax Deductible"),
-              trailing: Radio(
-                value: "Not Tax Deductible",
-                groupValue: tax,
-                onChanged: (value) {
-                  setState(() {
-                    tax = value as String;
-                  });
-                },
-                //activeColor: Colors.green,
-              ),
+          ),
+          ListTile(
+            title: const Text("Not Tax Deductible"),
+            trailing: Radio(
+              value: "Not Tax Deductible",
+              groupValue: selectedTax,
+              onChanged: (value) {
+                setState(() {
+                  selectedTax = value as String;
+                });
+              },
+              //activeColor: Colors.green,
             ),
-            TextButton(
-                onPressed: () {},
-                child: Text(
-                  'SHOW RESULTS',
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColorDark,
+          ),
+          TextButton(
+              onPressed: () {
+                // pass into organisation overview as params
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => TabsScreen(filter: {
+                      'categories': selectedCategories,
+                      'tax': selectedTax
+                    }),
                   ),
-                )),
-          ],
-        ),
+                );
+              },
+              child: Text(
+                'SHOW RESULTS',
+                style: TextStyle(
+                  color: Theme.of(context).primaryColorDark,
+                ),
+              )),
+        ],
       ),
     );
   }
