@@ -93,7 +93,13 @@ class ProfileScreen extends StatelessWidget {
                           child: Image.asset('assets/images/progress.png')),
                       trailing: IconButton(
                         icon: const Icon(Icons.arrow_forward_ios),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => ProgressScreen(),
+                            ),
+                          );
+                        },
                       ),
                       title: Text(
                         'My Progress',

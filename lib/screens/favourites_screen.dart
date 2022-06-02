@@ -112,7 +112,6 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                               .contains(_resultsList[index]['name'])) {
                             setState(() {
                               _favourites.remove(_resultsList[index]['name']);
-                              getResultsList();
                             });
                             updateFirestoreFavourites();
                           }

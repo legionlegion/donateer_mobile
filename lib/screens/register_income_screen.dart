@@ -22,12 +22,16 @@ class RegisterIncomeScreen extends StatefulWidget {
 }
 
 class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
+  User? user = FirebaseAuth.instance.currentUser;
   String _income = '';
   var _isLoading = false;
-  var isGoogleUser;
+  var isGoogleUser = true;
 
   void initState() {
-    isGoogleUser = widget.user != null;
+    setState(() {
+      isGoogleUser = user != null;
+    });
+    super.initState();
   }
 
   // List of items in our dropdown menu
@@ -80,7 +84,7 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
                   ElevatedButton(
                     child: Text('Finish'),
                     onPressed: () async {
-                      if (!isGoogleUser) {
+                      if (widget.userName != null) {
                         User? user = await FirebaseAuth.instance
                             .createUserWithEmailAndPassword(
                                 email: widget.userEmail!,
@@ -99,7 +103,7 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
                       } else {
                         await FirebaseFirestore.instance
                           .collection('Users')
-                          .doc(widget.user!.uid)
+                          .doc(user!.uid)
                           .update({
                             'income': _income,
                         });

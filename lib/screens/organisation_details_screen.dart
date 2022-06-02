@@ -1,6 +1,7 @@
 import 'package:donateer/widgets/donate_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import './tabs_screen.dart';
 
@@ -8,9 +9,7 @@ class OrganisationDetailsScreen extends StatefulWidget {
   final Map obj;
   User? user = FirebaseAuth.instance.currentUser;
 
-  OrganisationDetailsScreen(
-      {Key? key, required this.obj})
-      : super(key: key);
+  OrganisationDetailsScreen({Key? key, required this.obj}) : super(key: key);
 
   @override
   _OrganisationDetailsScreenState createState() =>
@@ -18,6 +17,46 @@ class OrganisationDetailsScreen extends StatefulWidget {
 }
 
 class _OrganisationDetailsScreenState extends State<OrganisationDetailsScreen> {
+  bool isFavourite = false;
+  var data;
+  List _favourites = [];
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  getData() async {
+    data = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(widget.user!.uid)
+        .get();
+    setState(() {
+      if (data['favourites'] != null) {
+        _favourites = data['favourites'];
+      } else {
+        _favourites = [];
+      }
+    });
+    if (_favourites.contains(widget.obj['name'])) {
+      setState(() {
+        isFavourite = true;
+      });
+    } else {
+      setState(() {
+        isFavourite = false;
+      });
+    }
+  }
+
+  updateFirestoreFavourites() async {
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(widget.user!.uid)
+        .update({'favourites': _favourites});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,8 +75,23 @@ class _OrganisationDetailsScreenState extends State<OrganisationDetailsScreen> {
           title: Text(widget.obj['name']),
           actions: <Widget>[
             IconButton(
-                icon: const Icon(Icons.favorite_outline_rounded),
-                onPressed: () {})
+                icon: isFavourite
+                    ? Icon(
+                        Icons.favorite,
+                        color: Colors.red[400],
+                      )
+                    : const Icon(Icons.favorite_outline_rounded),
+                onPressed: () {
+                  setState(() {
+                    isFavourite = !isFavourite;
+                    if (isFavourite) {
+                      _favourites.add(widget.obj['name']);
+                    } else {
+                      _favourites.remove(widget.obj['name']);
+                    }
+                  });
+                  updateFirestoreFavourites();
+                })
           ]),
       body: SingleChildScrollView(
         child: Column(
@@ -95,8 +149,7 @@ class _OrganisationDetailsScreenState extends State<OrganisationDetailsScreen> {
                           context: context,
                           builder: (BuildContext context) {
                             return DonateDialog(
-                                name: widget.obj['name'],
-                                obj: widget.obj);
+                                name: widget.obj['name'], obj: widget.obj);
                           },
                         );
                       },

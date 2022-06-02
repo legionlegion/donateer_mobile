@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donateer/provider/google_sign_in.dart';
+import 'package:donateer/screens/register_income_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,8 +15,34 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  User? user = FirebaseAuth.instance.currentUser;
+  bool hasIncome = false;
+
+  @override
+  void initState() {
+    getIncome();
+    super.initState();
+  }
+
+  getIncome() async {
+    if (user != null) {
+      var data = await FirebaseFirestore.instance
+                          .collection('Users')
+                          .doc(user!.uid).get();
+    setState(() {
+      hasIncome = data['income'] != null;
+    });
+    }
+                                             
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,11 +96,13 @@ class MyApp extends StatelessWidget {
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (ctx, userSnapshot) {
-            if (userSnapshot.hasData ||
-                FirebaseAuth.instance.currentUser != null) {
+            if (!userSnapshot.hasData) {
+              return LoginScreen();
+            }
+            else if (hasIncome) {
               return TabsScreen();
             }
-            return LoginScreen();
+            return RegisterIncomeScreen();
           },
         ),
         // home: LoginScreen(),
