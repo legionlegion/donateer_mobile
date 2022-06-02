@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     provider.googleLogin().then((userCredential) => {
                       // User exists and is a new Google user
                         if (userCredential != null) {
-                          if (userCredential.additionalUserInfo.isNewUser) {
+                          if (!userCredential.additionalUserInfo.isNewUser) {
                           // Not a new Google user
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
