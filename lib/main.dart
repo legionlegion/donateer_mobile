@@ -24,24 +24,26 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   User? user = FirebaseAuth.instance.currentUser;
-  bool hasIncome = false;
+  late Future<bool> hasIncome;
+  bool hasUser = false;
 
   @override
   void initState() {
-    getIncome();
+    hasIncome = checkIncome();
     super.initState();
   }
 
-  getIncome() async {
+  Future<bool> checkIncome() async {
+    await Future.delayed(Duration(seconds: 3));
     if (user != null) {
       var data = await FirebaseFirestore.instance
-                          .collection('Users')
-                          .doc(user!.uid).get();
-    setState(() {
-      hasIncome = data['income'] != null;
-    });
+          .collection('Users')
+          .doc(user!.uid)
+          .get();
+      hasUser = true;
+      return data['income'] != null;
     }
-                                             
+    return false;
   }
 
   @override
@@ -93,19 +95,75 @@ class _MyAppState extends State<MyApp> {
                 ),
               ),
             )),
-        home: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (ctx, userSnapshot) {
-            if (!userSnapshot.hasData) {
-              return LoginScreen();
+        // home: StreamBuilder(
+        //   stream: FirebaseAuth.instance.authStateChanges(),
+        //   builder: (ctx, userSnapshot) {
+        //     if (!userSnapshot.hasData) {
+        //       return LoginScreen();
+        //     }
+        //     else if (hasIncome) {
+        //       return TabsScreen();
+        //     }
+        //     return RegisterIncomeScreen();
+        //   },
+        // ),
+        // home: (user != null)
+        //     // if user present, check if there is income
+        //     ? (hasIncome ? TabsScreen() : RegisterIncomeScreen())
+        //     // if no user and no income
+        //     : LoginScreen(),
+        home: FutureBuilder<bool>(
+          future: hasIncome,
+          initialData: false,
+          builder: (
+            BuildContext context,
+            AsyncSnapshot<bool> snapshot,
+          ) {
+            print("Snapshot:");
+            print(snapshot);
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  Visibility(
+                    visible: snapshot.hasData,
+                    child: Text(
+                      'Loading',
+                      style: const TextStyle(color: Colors.white, fontSize: 24),
+                    ),
+                  ),
+                ],
+              );
+            } else if (snapshot.connectionState == ConnectionState.done) {
+              print("Has user?");
+              print(hasUser);
+              print(user);
+
+              // No user at all
+              if (!hasUser) {
+                return LoginScreen();
+              }
+              // Has user
+              if (snapshot.hasError) {
+                return const Text('Error');
+              } else if (snapshot.hasData) {
+                if (snapshot.data!) {
+                  // user has income
+                  return TabsScreen();
+                } else {
+                  // user has not entered income yet
+                  return RegisterIncomeScreen();
+                }
+              } else {
+                return const Text('Empty data');
+              }
+            } else {
+              return Text('State: ${snapshot.connectionState}');
             }
-            else if (hasIncome) {
-              return TabsScreen();
-            }
-            return RegisterIncomeScreen();
           },
         ),
-        // home: LoginScreen(),
       ),
     );
   }
