@@ -23,6 +23,13 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
     super.initState();
   }
 
+  @override
+  void didChangeDependencies() {
+    getStreamSnapshots();
+    getResultsList();
+    super.didChangeDependencies();
+  }
+
   getStreamSnapshots() async {
     var data =
         await FirebaseFirestore.instance.collection('Organisations').get();
@@ -111,6 +118,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                           } else if (_favourites
                               .contains(_resultsList[index]['name'])) {
                             setState(() {
+                              getResultsList();
                               _favourites.remove(_resultsList[index]['name']);
                             });
                             updateFirestoreFavourites();

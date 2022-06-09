@@ -1,9 +1,9 @@
-import 'package:donateer/widgets/donate_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import './tabs_screen.dart';
+import 'donation_screen.dart';
 
 class OrganisationDetailsScreen extends StatefulWidget {
   final Map obj;
@@ -143,14 +143,15 @@ class _OrganisationDetailsScreenState extends State<OrganisationDetailsScreen> {
                       ],
                     ),
                     ElevatedButton(
-                      child: const Text('DONATE YOUR TIME'),
+                      child: const Text('NEXT'),
                       onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return DonateDialog(
-                                name: widget.obj['name'], obj: widget.obj);
-                          },
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                DonationScreen(obj: widget.obj),
+                          ),
+                          (route) => false,
                         );
                       },
                     ),

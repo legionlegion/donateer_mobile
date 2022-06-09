@@ -1,9 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:add_2_calendar/add_2_calendar.dart';
 
-import '../screens/after_donation_screen.dart';
+import '../screens/donation_screen.dart';
 
 class DonateDialog extends StatefulWidget {
   final String name;
@@ -20,6 +21,34 @@ class _DonateDialogState extends State<DonateDialog> {
   String start = '';
   String end = '';
   User? user = FirebaseAuth.instance.currentUser;
+  List _donations = [];
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  getData() async {
+    var data = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(user!.uid)
+        .get();
+    setState(() {
+      if (data['donations'] != null) {
+        _donations = data['donations'];
+      } else {
+        _donations = [];
+      }
+    });
+  }
+
+  updateFirestore() async {
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(user!.uid)
+        .update({'donations': _donations});
+  }
 
   Event getEvent(start, end) {
     Event event = Event(
@@ -62,7 +91,7 @@ class _DonateDialogState extends State<DonateDialog> {
                   'Select start time',
                   style: TextStyle(color: Colors.blue[900]),
                 )),
-            Text(start == null ? '' : '${start}'),
+            Text(start == '' ? '' : start.substring(0, 19)),
             TextButton(
                 onPressed: () {
                   DatePicker.showDateTimePicker(
@@ -80,17 +109,20 @@ class _DonateDialogState extends State<DonateDialog> {
                   'Select end time',
                   style: TextStyle(color: Colors.blue[900]),
                 )),
-            Text(end == null ? '' : '${end}'),
+            Text(end == '' ? '' : end.substring(0, 19)),
             SizedBox(height: 12),
             ElevatedButton(
                 child: Text("Submit"),
                 onPressed: () {
+                  var duration = DateTime.parse(end).difference(DateTime.parse(start));
+                  _donations.add({'name': widget.name, 'start': start, 'end': end, 'duration': duration.inMinutes});
+                  updateFirestore();
                   Add2Calendar.addEvent2Cal(getEvent(start, end));
-
+                  
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                      builder: (ctx) => AfterDonationScreen(
+                      builder: (ctx) => DonationScreen(
                         obj: widget.obj
                       ),
                     ),

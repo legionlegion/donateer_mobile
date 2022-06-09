@@ -2,14 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
+import '../widgets/donate_dialog.dart';
 import './organisation_details_screen.dart';
 
-class AfterDonationScreen extends StatelessWidget {
+class DonationScreen extends StatelessWidget {
   final Map obj;
   User? user = FirebaseAuth.instance.currentUser;
 
-  AfterDonationScreen({Key? key, required this.obj})
-      : super(key: key);
+  DonationScreen({Key? key, required this.obj}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +21,7 @@ class AfterDonationScreen extends StatelessWidget {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        OrganisationDetailsScreen(obj: obj),
+                    builder: (context) => OrganisationDetailsScreen(obj: obj),
                   ),
                   (route) => false,
                 );
@@ -34,8 +33,9 @@ class AfterDonationScreen extends StatelessWidget {
                 onPressed: () {})
           ]),
       body: SingleChildScrollView(
+        child: Container(
+            height: MediaQuery.of(context).size.height - 120,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             YoutubePlayer(
               controller: YoutubePlayerController(
@@ -48,11 +48,27 @@ class AfterDonationScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Padding(
-              padding: const EdgeInsets.all(30),
+              padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Text(obj["donateMessage"]),
+            ),
+            Spacer(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 22),
+              child: ElevatedButton(
+                child: const Text('DONATE YOUR TIME'),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return DonateDialog(name: obj['name'], obj: obj);
+                    },
+                  );
+                },
+              ),
             ),
           ],
         ),
+      ),
       ),
     );
   }
