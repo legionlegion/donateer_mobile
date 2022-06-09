@@ -1,4 +1,5 @@
 import 'package:donateer/provider/google_sign_in.dart';
+import 'package:donateer/screens/edit_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -82,7 +83,14 @@ class ProfileScreen extends StatelessWidget {
                         )),
                     OutlinedButton(
                       child: const Text('Edit Profile'),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => EditProfileScreen(),
+                          ),
+                          (Route<dynamic> route) => false,
+                        );
+                      },
                     )
                   ],
                 )

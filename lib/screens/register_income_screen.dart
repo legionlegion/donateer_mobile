@@ -2,6 +2,7 @@ import 'package:donateer/screens/tabs_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 
 class RegisterIncomeScreen extends StatefulWidget {
   RegisterIncomeScreen({
@@ -74,6 +75,9 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
                       },
                       decoration: InputDecoration(labelText: "Enter your monthly income"),
                       keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                  ],
                     ),
                   ),
                   

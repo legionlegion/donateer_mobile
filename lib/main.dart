@@ -120,7 +120,7 @@ class _MyAppState extends State<MyApp> {
         //     // if no user and no income
         //     : LoginScreen(),
         home: FutureBuilder<bool>(
-          future: checkIncome(),
+          future: hasIncome,
           initialData: false,
           builder: (
             BuildContext context,

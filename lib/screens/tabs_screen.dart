@@ -6,7 +6,8 @@ import './favourites_screen.dart';
 
 class TabsScreen extends StatefulWidget {
   final filter;
-  TabsScreen({Key? key, this.filter}) : super(key: key);
+  final tabNo;
+  TabsScreen({Key? key, this.filter, this.tabNo}) : super(key: key);
 
   @override
   _TabsScreenState createState() => _TabsScreenState();
@@ -15,10 +16,11 @@ class TabsScreen extends StatefulWidget {
 class _TabsScreenState extends State<TabsScreen> {
   User? user = FirebaseAuth.instance.currentUser;
   late List<Widget> _pages;
+  late int _selectedPageIndex;
 
-  void initState() {}
-
-  int _selectedPageIndex = 0;
+  void initState() {
+    _selectedPageIndex = widget.tabNo != null ? widget.tabNo : 0;
+  }
 
   void _selectPage(int index) {
     print("RECEIVED USER:");
