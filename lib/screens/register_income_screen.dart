@@ -108,13 +108,21 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
                             'income': _income,
                         });
                       };
+                      // Navigator.of(context)
+                      //   .pushAndRemoveUntil(
+                      //     MaterialPageRoute(
+                      //       builder: (context) =>
+                      //           TabsScreen(),
+                      //     ),
+                      //     ModalRoute.withName('/'),
+                      // );
                       Navigator.of(context)
                         .pushAndRemoveUntil(
                           MaterialPageRoute(
                             builder: (context) =>
                                 TabsScreen(),
                           ),
-                          ModalRoute.withName('/'),
+                          (Route<dynamic> route) => false,
                       );
                     },
                   ),

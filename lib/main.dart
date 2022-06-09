@@ -23,7 +23,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  User? user = FirebaseAuth.instance.currentUser;
+  User? user;
   late Future<bool> hasIncome;
   bool hasUser = false;
 
@@ -34,14 +34,21 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<bool> checkIncome() async {
-    await Future.delayed(Duration(seconds: 3));
+    user = await FirebaseAuth.instance.currentUser;
+    print("CHECKING INCOME AND USER");
+    print("Has user?");
     if (user != null) {
-      var data = await FirebaseFirestore.instance
+      print("Yes! User details:");
+      print(user);
+      DocumentSnapshot doc = await FirebaseFirestore.instance
           .collection('Users')
           .doc(user!.uid)
           .get();
+      final data = doc.data() as Map<String, dynamic>;
+      print("Retrieved data: ");
+      print(data);
       hasUser = true;
-      return data['income'] != null;
+      return data.containsKey('income');
     }
     return false;
   }
@@ -113,7 +120,7 @@ class _MyAppState extends State<MyApp> {
         //     // if no user and no income
         //     : LoginScreen(),
         home: FutureBuilder<bool>(
-          future: hasIncome,
+          future: checkIncome(),
           initialData: false,
           builder: (
             BuildContext context,
@@ -137,10 +144,9 @@ class _MyAppState extends State<MyApp> {
                 ],
               );
             } else if (snapshot.connectionState == ConnectionState.done) {
-              print("Has user?");
+              print("Has user 2nd check");
               print(hasUser);
               print(user);
-
               // No user at all
               if (!hasUser) {
                 return LoginScreen();

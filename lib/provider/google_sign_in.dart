@@ -28,13 +28,15 @@ class GoogleSignInProvider extends ChangeNotifier {
       UserCredential? userCredential = await FirebaseAuth.instance
           .signInWithCredential(credential)
           .then((UserCredential userCredential) async {
-        await FirebaseFirestore.instance
-            .collection('Users')
-            .doc(userCredential.user!.uid)
-            .set({
-          'username': userCredential.user!.displayName,
-          'email': userCredential.user!.email,
-        });
+        if (userCredential.additionalUserInfo!.isNewUser) {
+          await FirebaseFirestore.instance
+              .collection('Users')
+              .doc(userCredential.user!.uid)
+              .set({
+            'username': userCredential.user!.displayName,
+            'email': userCredential.user!.email,
+          });
+        }
         return userCredential;
       });
 
