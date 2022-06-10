@@ -18,16 +18,20 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
 
   @override
   void initState() {
-    getStreamSnapshots();
-    getResultsList();
+    getStreamSnapshots().then((_) {
+      getResultsList();
+    });
     super.initState();
   }
 
-  getStreamSnapshots() async {
-    var data =
-        await FirebaseFirestore.instance.collection('Organisations').get();
-    setState(() {
-      _allResults = data.docs;
+  Future getStreamSnapshots() {
+    return FirebaseFirestore.instance
+        .collection('Organisations')
+        .get()
+        .then((data) {
+      setState(() {
+        _allResults = data.docs;
+      });
     });
   }
 
@@ -68,10 +72,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Favourites',
-            style: Theme.of(context).textTheme.headline1
-          ),
+          Text('Favourites', style: Theme.of(context).textTheme.headline1),
           Expanded(
               child: ListView.builder(
             itemCount: _resultsList.length,
@@ -102,19 +103,24 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                               )
                             : const Icon(Icons.favorite_outline_rounded),
                         onPressed: () async {
-                          if (!_favourites
-                              .contains(_resultsList[index]['name'])) {
-                            setState(() {
-                              _favourites.add(_resultsList[index]['name']);
-                            });
-                            updateFirestoreFavourites();
-                          } else if (_favourites
-                              .contains(_resultsList[index]['name'])) {
-                            setState(() {
-                              _favourites.remove(_resultsList[index]['name']);
-                            });
-                            updateFirestoreFavourites();
-                          }
+                          // if (!_favourites
+                          //     .contains(_resultsList[index]['name'])) {
+                          //   setState(() {
+                          //     _favourites.add(_resultsList[index]['name']);
+                          //   });
+                          //   updateFirestoreFavourites();
+                          // } else if (_favourites
+                          //     .contains(_resultsList[index]['name'])) {
+                          //   setState(() {
+                          //     _favourites.remove(_resultsList[index]['name']);
+                          //   });
+                          //   updateFirestoreFavourites();
+                          // }
+                          setState(() {
+                            _favourites.remove(_resultsList[index]['name']);
+                            _resultsList.removeAt(index);
+                          });
+                          updateFirestoreFavourites();
                         },
                       ),
                       title: Text(_resultsList[index]['name'],
