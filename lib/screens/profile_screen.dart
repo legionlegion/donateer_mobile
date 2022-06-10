@@ -43,12 +43,6 @@ class ProfileScreen extends StatelessWidget {
                       provider.logout();
                     });
                     await FirebaseAuth.instance.signOut();
-                    // Navigator.of(context).pushAndRemoveUntil(
-                    //   MaterialPageRoute(
-                    //     builder: (context) => LoginScreen(),
-                    //   ),
-                    //   ModalRoute.withName('/'),
-                    // );
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
                         builder: (context) => LoginScreen(),
