@@ -30,10 +30,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     if (isValid) {
       _formKey.currentState!.save();
-      await FirebaseFirestore.instance.collection('Users').doc(user!.uid).set({
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(user!.uid)
+          .update({
         'username': _nameTextController.text,
         'email': _emailTextController.text,
         'income': _incomeController.text,
+        'hourlyIncome': _hourlyIncome,
       });
       navigateBack();
     }

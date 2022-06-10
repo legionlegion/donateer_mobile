@@ -25,6 +25,8 @@ class RegisterIncomeScreen extends StatefulWidget {
 class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
   User? user = FirebaseAuth.instance.currentUser;
   String _income = '';
+  String _hourlyIncome = '';
+  TextEditingController incomeController = new TextEditingController();
   var _isLoading = false;
   var isGoogleUser = true;
 
@@ -70,7 +72,7 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
                     child: TextField(
                       onChanged: (value) {
                         setState(() {
-                          _income = ((int.parse(value) / 160).floor()).toString();
+                          _hourlyIncome = ((int.parse(value) / 160).floor()).toString();
                         });
                       },
                       decoration: InputDecoration(labelText: "Enter your monthly income"),
@@ -78,11 +80,12 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
                       inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                   ],
+                  controller: incomeController,
                     ),
                   ),
                   
                   SizedBox(height: 12),
-                  Text('Estimated hourly income: \$${_income}'),
+                  Text('Estimated hourly income: \$${_hourlyIncome}'),
                   
                   Spacer(),
                   ElevatedButton(
@@ -102,14 +105,16 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
                           .set({
                         'username': widget.userName,
                         'email': widget.userEmail,
-                        'income': _income,
+                        'income': incomeController.text,
+                        'hourlyIncome': _hourlyIncome,
                       });
                       } else {
                         await FirebaseFirestore.instance
                           .collection('Users')
                           .doc(user!.uid)
                           .update({
-                            'income': _income,
+                            'income': incomeController.text,
+                            'hourlyIncome': _hourlyIncome,
                         });
                       };
                       // Navigator.of(context)
