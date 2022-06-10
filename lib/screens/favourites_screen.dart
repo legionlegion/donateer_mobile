@@ -1,6 +1,10 @@
+import 'package:donateer/provider/google_sign_in.dart';
+import 'package:donateer/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 import './organisation_details_screen.dart';
 import './tabs_screen.dart';
 
@@ -67,83 +71,107 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(22),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Favourites', style: Theme.of(context).textTheme.headline1),
-          Expanded(
-              child: ListView.builder(
-            itemCount: _resultsList.length,
-            itemBuilder: (ctx, index) => InkWell(
-              onTap: () {
-                Navigator.pushAndRemoveUntil(
-                  ctx,
-                  MaterialPageRoute(
-                    builder: (ctx) => OrganisationDetailsScreen(
-                        obj: _resultsList[index].data()),
-                  ),
-                  (route) => false,
-                );
-              },
-              child: Card(
-                margin: EdgeInsets.only(bottom: 16.0),
-                color: Theme.of(context).primaryColor,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    ListTile(
-                      //leading: Icon(Icons.arrow_drop_down_circle),   // to add organisation logo
-                      trailing: IconButton(
-                        icon: _favourites.contains(_resultsList[index]['name'])
-                            ? Icon(
-                                Icons.favorite,
-                                color: Colors.red[400],
-                              )
-                            : const Icon(Icons.favorite_outline_rounded),
-                        onPressed: () async {
-                          // if (!_favourites
-                          //     .contains(_resultsList[index]['name'])) {
-                          //   setState(() {
-                          //     _favourites.add(_resultsList[index]['name']);
-                          //   });
-                          //   updateFirestoreFavourites();
-                          // } else if (_favourites
-                          //     .contains(_resultsList[index]['name'])) {
-                          //   setState(() {
-                          //     _favourites.remove(_resultsList[index]['name']);
-                          //   });
-                          //   updateFirestoreFavourites();
-                          // }
-                          setState(() {
-                            _favourites.remove(_resultsList[index]['name']);
-                            _resultsList.removeAt(index);
-                          });
-                          updateFirestoreFavourites();
-                        },
-                      ),
-                      title: Text(_resultsList[index]['name'],
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                    ),
-                    Image.network(_resultsList[index]['imageUrl'],
-                        height: 145, fit: BoxFit.fitWidth),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        _resultsList[index]['description']
-                                .replaceAll("\\n", "\n")
-                                .substring(0, 90) +
-                            '...',
-                        style: TextStyle(color: Colors.black.withOpacity(0.6)),
-                      ),
-                    ),
-                  ],
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      child: Padding(
+        padding: EdgeInsets.all(22),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Favourites',
+                    style: Theme.of(context).textTheme.headline1),
+                IconButton(
+                  icon: const Icon(Icons.search),
+                  onPressed: () {},
                 ),
-              ),
+              ],
             ),
-          )),
-        ],
+            _resultsList.length == 0
+                ? Expanded(
+                    child: Center(
+                      child: Text('No favourites added yet, get started!'),
+                    ),
+                  )
+                : Expanded(
+                    child: ListView.builder(
+                    itemCount: _resultsList.length,
+                    itemBuilder: (ctx, index) => InkWell(
+                      onTap: () {
+                        Navigator.pushAndRemoveUntil(
+                          ctx,
+                          MaterialPageRoute(
+                            builder: (ctx) => OrganisationDetailsScreen(
+                                obj: _resultsList[index].data()),
+                          ),
+                          (route) => false,
+                        );
+                      },
+                      child: Card(
+                        margin: EdgeInsets.only(bottom: 16.0),
+                        color: Theme.of(context).primaryColor,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            ListTile(
+                              //leading: Icon(Icons.arrow_drop_down_circle),   // to add organisation logo
+                              trailing: IconButton(
+                                icon: _favourites
+                                        .contains(_resultsList[index]['name'])
+                                    ? Icon(
+                                        Icons.favorite,
+                                        color: Colors.red[400],
+                                      )
+                                    : const Icon(
+                                        Icons.favorite_outline_rounded),
+                                onPressed: () async {
+                                  // if (!_favourites
+                                  //     .contains(_resultsList[index]['name'])) {
+                                  //   setState(() {
+                                  //     _favourites.add(_resultsList[index]['name']);
+                                  //   });
+                                  //   updateFirestoreFavourites();
+                                  // } else if (_favourites
+                                  //     .contains(_resultsList[index]['name'])) {
+                                  //   setState(() {
+                                  //     _favourites.remove(_resultsList[index]['name']);
+                                  //   });
+                                  //   updateFirestoreFavourites();
+                                  // }
+                                  setState(() {
+                                    _favourites
+                                        .remove(_resultsList[index]['name']);
+                                    _resultsList.removeAt(index);
+                                  });
+                                  updateFirestoreFavourites();
+                                },
+                              ),
+                              title: Text(_resultsList[index]['name'],
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                            Image.network(_resultsList[index]['imageUrl'],
+                                height: 145, fit: BoxFit.fitWidth),
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Text(
+                                _resultsList[index]['description']
+                                        .replaceAll("\\n", "\n")
+                                        .substring(0, 90) +
+                                    '...',
+                                style: TextStyle(
+                                    color: Colors.black.withOpacity(0.6)),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )),
+          ],
+        ),
       ),
     );
   }

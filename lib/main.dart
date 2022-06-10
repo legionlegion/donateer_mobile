@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donateer/provider/google_sign_in.dart';
 import 'package:donateer/screens/register_income_screen.dart';
@@ -129,19 +131,24 @@ class _MyAppState extends State<MyApp> {
             print("Snapshot:");
             print(snapshot);
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(),
-                  Visibility(
-                    visible: snapshot.hasData,
-                    child: Text(
-                      'Loading',
-                      style: const TextStyle(color: Colors.white, fontSize: 24),
-                    ),
+              return Scaffold(
+                body: Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      Visibility(
+                        visible: snapshot.hasData,
+                        child: Text(
+                          'Loading',
+                          style: const TextStyle(
+                              color: Colors.black, fontSize: 24),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               );
             } else if (snapshot.connectionState == ConnectionState.done) {
               print("Has user 2nd check");
