@@ -52,10 +52,14 @@ class _OrganisationsOverviewScreenState
     if (widget.filter != null) {
       results = [];
       for (var data in _allResults) {
-        if (data['categories']
-            .toSet()
-            .intersection(widget.filter['categories'].toSet())
-            .isNotEmpty) {
+        print(data['taxDeductible']);
+        print(widget.filter['tax']);
+        if ((data['categories']
+                .toSet()
+                .intersection(widget.filter['categories'].toSet())
+                .isNotEmpty | widget.filter['categories'].isEmpty) &
+            ((data['taxDeductible'] == widget.filter['tax']) |
+                (widget.filter['tax'] == ''))) {
           results.add(data);
         }
       }
