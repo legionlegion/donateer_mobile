@@ -35,11 +35,11 @@ class _RegisterDetailsScreenState extends State<RegisterDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          child: Padding(
-            padding: const EdgeInsets.all(22),
+      body: SafeArea(
+        minimum: EdgeInsets.all(22),
+        child: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height - 44,
             child: Form(
               key: _formKey,
               child: Column(

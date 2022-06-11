@@ -34,41 +34,41 @@ class DonationScreen extends StatelessWidget {
           ]),
       body: SingleChildScrollView(
         child: Container(
-            height: MediaQuery.of(context).size.height - 120,
-        child: Column(
-          children: [
-            YoutubePlayer(
-              controller: YoutubePlayerController(
-                initialVideoId: obj["videoUrl"],
-                flags: const YoutubePlayerFlags(
-                  autoPlay: true,
-                  mute: false,
+          height: MediaQuery.of(context).size.height - 140,
+          child: Column(
+            children: [
+              YoutubePlayer(
+                controller: YoutubePlayerController(
+                  initialVideoId: obj["videoUrl"],
+                  flags: const YoutubePlayerFlags(
+                    autoPlay: true,
+                    mute: false,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Text(obj["donateMessage"]),
-            ),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 22),
-              child: ElevatedButton(
-                child: const Text('DONATE YOUR TIME'),
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return DonateDialog(name: obj['name'], obj: obj);
-                    },
-                  );
-                },
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Text(obj["donateMessage"]),
               ),
-            ),
-          ],
+              const Spacer(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 22),
+                child: ElevatedButton(
+                  child: const Text('DONATE YOUR TIME'),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return DonateDialog(name: obj['name'], obj: obj);
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
       ),
     );
   }

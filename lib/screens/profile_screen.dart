@@ -14,10 +14,10 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      child: Padding(
-        padding: const EdgeInsets.all(22),
+    return SafeArea(
+      minimum: EdgeInsets.all(22),
+      child: Container(
+        height: MediaQuery.of(context).size.height,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -148,8 +148,8 @@ class ProfileScreen extends StatelessWidget {
                   child: Card(
                     child: ListTile(
                       title: Text('\$', textAlign: TextAlign.center),
-                      subtitle:
-                          const Text('total donated', textAlign: TextAlign.center),
+                      subtitle: const Text('total donated',
+                          textAlign: TextAlign.center),
                     ),
                   ),
                 ),
@@ -157,8 +157,8 @@ class ProfileScreen extends StatelessWidget {
                   child: Card(
                     child: ListTile(
                       title: Text('\$', textAlign: TextAlign.center),
-                      subtitle:
-                          const Text('pending donation', textAlign: TextAlign.center),
+                      subtitle: const Text('pending donation',
+                          textAlign: TextAlign.center),
                     ),
                   ),
                 ),

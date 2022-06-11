@@ -53,11 +53,11 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+      body: SafeArea(
+      minimum: EdgeInsets.all(22),
+      child: SingleChildScrollView(
         child: Container(
-            height: MediaQuery.of(context).size.height,
-            child: Padding(
-              padding: const EdgeInsets.all(22),
+            height: MediaQuery.of(context).size.height - 44,
               child: Column(
                 children: <Widget>[
                   Text('Step 2/2:\nLet’s help you set an estimate of your hourly income!',

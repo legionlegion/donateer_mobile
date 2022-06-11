@@ -66,10 +66,10 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      child: Padding(
-        padding: const EdgeInsets.all(22),
+    return SafeArea(
+      minimum: EdgeInsets.all(22),
+      child: Container(
+        height: MediaQuery.of(context).size.height,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -78,10 +78,6 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
               children: [
                 Text('Favourites',
                     style: Theme.of(context).textTheme.headline1),
-                IconButton(
-                  icon: const Icon(Icons.search),
-                  onPressed: () {},
-                ),
               ],
             ),
             _resultsList.length == 0

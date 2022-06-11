@@ -102,7 +102,7 @@ class _OrganisationDetailsScreenState extends State<OrganisationDetailsScreen> {
             Padding(
               padding: const EdgeInsets.all(22),
               child: Container(
-                height: MediaQuery.of(context).size.height - 280,
+                height: MediaQuery.of(context).size.height - 300,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

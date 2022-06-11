@@ -53,9 +53,10 @@ class _OrganisationsOverviewScreenState
       results = [];
       for (var data in _allResults) {
         if ((data['categories']
-                .toSet()
-                .intersection(widget.filter['categories'].toSet())
-                .isNotEmpty | widget.filter['categories'].isEmpty) &
+                    .toSet()
+                    .intersection(widget.filter['categories'].toSet())
+                    .isNotEmpty |
+                widget.filter['categories'].isEmpty) &
             ((data['taxDeductible'] == widget.filter['tax']) |
                 (widget.filter['tax'] == ''))) {
           results.add(data);
@@ -109,8 +110,8 @@ class _OrganisationsOverviewScreenState
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(22),
+    return SafeArea(
+      minimum: EdgeInsets.all(22),
       child: Column(
         children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
