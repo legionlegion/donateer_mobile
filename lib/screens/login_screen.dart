@@ -4,7 +4,6 @@ import 'package:donateer/screens/tabs_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:provider/provider.dart';
@@ -20,9 +19,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
-
-  final _focusEmail = FocusNode();
-  final _focusPassword = FocusNode();
 
   void _trySubmit() {
     final isValid = _formKey.currentState!.validate();
@@ -57,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Container(
       height: MediaQuery.of(context).size.height,
         child: Padding(
-          padding: EdgeInsets.all(22),
+          padding: const EdgeInsets.all(22),
           child: Form(
             key: _formKey,
             child: Column(
@@ -66,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 200, fit: BoxFit.fitWidth),
                 Text('Welcome back.\nLogin to your account',
                     style: Theme.of(context).textTheme.headline1),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 /*
                 if (defaultTargetPlatform == TargetPlatform.iOS)
                   SignInWithAppleButton(
@@ -89,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPrimary: Colors.black,
                   ), 
                   icon: FaIcon(FontAwesomeIcons.google, color: Colors.red[400],),
-                  label: Text('Sign In with Google'), 
+                  label: const Text('Sign In with Google'), 
                   onPressed: () {
                     final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
                     provider.googleLogin().then((userCredential) => {
@@ -113,12 +109,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     });
                   },
                 ),
-                SizedBox(height: 15),
-                Text('— OR —'),
-                SizedBox(height: 12),
-                Text('Continue with your email'),
+                const SizedBox(height: 15),
+                const Text('— OR —'),
+                const SizedBox(height: 12),
+                const Text('Continue with your email'),
                 TextFormField(
-                  key: ValueKey('email'),
+                  key: const ValueKey('email'),
                   validator: (value) {
                     if (value!.isEmpty || !value.contains('@')) {
                       return 'Please enter a valid email address.';
@@ -126,26 +122,26 @@ class _LoginScreenState extends State<LoginScreen> {
                     return null;
                   },
                   keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Email address',
                   ),
                   controller: _emailTextController,
                 ),
                 TextFormField(
-                  key: ValueKey('password'),
+                  key: const ValueKey('password'),
                   validator: (value) {
                     if (value!.isEmpty || value.length < 7) {
                       return 'Password must be at least 7 characters long.';
                     }
                     return null;
                   },
-                  decoration: InputDecoration(labelText: 'Password'),
+                  decoration: const InputDecoration(labelText: 'Password'),
                   obscureText: true,
                   controller: _passwordTextController,
                 ),
-                Spacer(),
+                const Spacer(),
                 ElevatedButton(
-                  child: Text('Log in'),
+                  child: const Text('Log in'),
                   onPressed: () async {
                     _trySubmit();
                     User? user =
@@ -164,7 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                 ),
                 TextButton(
-                  child: Text('Create an account',
+                  child: const Text('Create an account',
                       style: TextStyle(
                         decoration: TextDecoration.underline,
                       ),),

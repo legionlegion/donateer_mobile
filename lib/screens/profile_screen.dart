@@ -12,14 +12,12 @@ import './progress_screen.dart';
 class ProfileScreen extends StatelessWidget {
   User? user = FirebaseAuth.instance.currentUser;
 
-  ProfileScreen();
-
   @override
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height,
       child: Padding(
-        padding: EdgeInsets.all(22),
+        padding: const EdgeInsets.all(22),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -62,7 +60,7 @@ class ProfileScreen extends StatelessWidget {
                   radius: 40,
                   child: Text(
                     user!.displayName![0],
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 30.0,
                     ),
                   ),
@@ -71,7 +69,7 @@ class ProfileScreen extends StatelessWidget {
                 Column(
                   children: [
                     Text(user!.displayName!,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold,
                         )),
@@ -97,7 +95,7 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   ListTile(
                       leading: Padding(
-                          padding: EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(5),
                           child: Image.asset('assets/images/progress.png')),
                       trailing: IconButton(
                         icon: const Icon(Icons.arrow_forward_ios),
@@ -109,9 +107,9 @@ class ProfileScreen extends StatelessWidget {
                           );
                         },
                       ),
-                      title: Text(
+                      title: const Text(
                         'My Progress',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -127,7 +125,7 @@ class ProfileScreen extends StatelessWidget {
                   child: Card(
                     child: ListTile(
                       title: Text('hours', textAlign: TextAlign.center),
-                      subtitle: Text('total volunteered',
+                      subtitle: const Text('total volunteered',
                           textAlign: TextAlign.center),
                     ),
                   ),
@@ -136,7 +134,7 @@ class ProfileScreen extends StatelessWidget {
                   child: Card(
                     child: ListTile(
                       title: Text('hours', textAlign: TextAlign.center),
-                      subtitle: Text('pending volunteer',
+                      subtitle: const Text('pending volunteer',
                           textAlign: TextAlign.center),
                     ),
                   ),
@@ -151,7 +149,7 @@ class ProfileScreen extends StatelessWidget {
                     child: ListTile(
                       title: Text('\$', textAlign: TextAlign.center),
                       subtitle:
-                          Text('total donated', textAlign: TextAlign.center),
+                          const Text('total donated', textAlign: TextAlign.center),
                     ),
                   ),
                 ),
@@ -160,15 +158,15 @@ class ProfileScreen extends StatelessWidget {
                     child: ListTile(
                       title: Text('\$', textAlign: TextAlign.center),
                       subtitle:
-                          Text('pending donation', textAlign: TextAlign.center),
+                          const Text('pending donation', textAlign: TextAlign.center),
                     ),
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 15),
-            Spacer(),
-            Text('SUPPORT'),
+            const Spacer(),
+            const Text('SUPPORT'),
             const SizedBox(height: 5),
             Card(
               child: Column(
@@ -178,8 +176,8 @@ class ProfileScreen extends StatelessWidget {
                         icon: const Icon(Icons.chevron_right),
                         onPressed: () {},
                       ),
-                      title: Text('CONTACT US',
-                          style: const TextStyle(
+                      title: const Text('CONTACT US',
+                          style: TextStyle(
                             fontSize: 14.0,
                           ))),
                   ListTile(
@@ -187,8 +185,8 @@ class ProfileScreen extends StatelessWidget {
                         icon: const Icon(Icons.chevron_right),
                         onPressed: () {},
                       ),
-                      title: Text('FAQ',
-                          style: const TextStyle(
+                      title: const Text('FAQ',
+                          style: TextStyle(
                             fontSize: 14.0,
                           )))
                 ],

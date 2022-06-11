@@ -39,7 +39,7 @@ class _RegisterDetailsScreenState extends State<RegisterDetailsScreen> {
         child: Container(
           height: MediaQuery.of(context).size.height,
           child: Padding(
-            padding: EdgeInsets.all(22),
+            padding: const EdgeInsets.all(22),
             child: Form(
               key: _formKey,
               child: Column(
@@ -49,9 +49,9 @@ class _RegisterDetailsScreenState extends State<RegisterDetailsScreen> {
                     'Step 1/2:\nEnter your details \nto create an account',
                     style: Theme.of(context).textTheme.headline1,
                   ),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   TextFormField(
-                    key: ValueKey('email'),
+                    key: const ValueKey('email'),
                     validator: (value) {
                       if (value!.isEmpty || !value.contains('@')) {
                         return 'Please enter a valid email address.';
@@ -59,41 +59,41 @@ class _RegisterDetailsScreenState extends State<RegisterDetailsScreen> {
                       return null;
                     },
                     keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Email address',
                     ),
                     controller: _emailTextController,
                   ),
                   TextFormField(
-                    key: ValueKey('username'),
+                    key: const ValueKey('username'),
                     validator: (value) {
                       if (value!.isEmpty || value.length < 4) {
                         return 'Please enter at least 4 characters';
                       }
                       return null;
                     },
-                    decoration: InputDecoration(labelText: 'Username'),
+                    decoration: const InputDecoration(labelText: 'Username'),
                     controller: _usernameController,
                   ),
                   TextFormField(
-                    key: ValueKey('password'),
+                    key: const ValueKey('password'),
                     validator: (value) {
                       if (value!.isEmpty || value.length < 7) {
                         return 'Password must be at least 7 characters long.';
                       }
                       return null;
                     },
-                    decoration: InputDecoration(labelText: 'Password'),
+                    decoration: const InputDecoration(labelText: 'Password'),
                     obscureText: true,
                     controller: _passwordTextController,
                   ),
-                  Spacer(),
+                  const Spacer(),
                   ElevatedButton(
-                    child: Text('Continue'),
+                    child: const Text('Continue'),
                     onPressed: _trySubmit,
                   ),
                   TextButton(
-                    child: Text('Already have an account? Log In',
+                    child: const Text('Already have an account? Log In',
                         style: TextStyle(
                           decoration: TextDecoration.underline,
                         )),

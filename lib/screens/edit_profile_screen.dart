@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:donateer/screens/profile_screen.dart';
 import 'package:donateer/screens/tabs_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +62,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     if (user!.photoURL != null) {
       return NetworkImage(user!.photoURL!);
     }
-    return AssetImage('assets/images/smile.png');
+    return const AssetImage('assets/images/smile.png');
   }
 
   void navigateBack() {
@@ -87,7 +86,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             onPressed: () {
               navigateBack();
             }),
-        title: Text('Edit Profile'),
+        title: const Text('Edit Profile'),
       ),
       body: Center(
         child: Padding(
@@ -103,18 +102,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   backgroundImage: _getProfileImage(),
                 ),
                 TextFormField(
-                  key: ValueKey('username'),
+                  key: const ValueKey('username'),
                   validator: (value) {
                     if (value!.isEmpty || value.length < 4) {
                       return 'Please enter at least 4 characters';
                     }
                     return null;
                   },
-                  decoration: InputDecoration(labelText: 'Username'),
+                  decoration: const InputDecoration(labelText: 'Username'),
                   controller: _nameTextController,
                 ),
                 TextFormField(
-                  key: ValueKey('email'),
+                  key: const ValueKey('email'),
                   validator: (value) {
                     if (value!.isEmpty || !value.contains('@')) {
                       return 'Please enter a valid email address.';
@@ -122,7 +121,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     return null;
                   },
                   keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Email address',
                   ),
                   controller: _emailTextController,
@@ -135,18 +134,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     });
                   },
                   decoration:
-                      InputDecoration(labelText: "Enter your monthly income"),
+                      const InputDecoration(labelText: "Enter your monthly income"),
                   keyboardType: TextInputType.number,
                   inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                   ],
                   controller: _incomeController,
                 ),
-                SizedBox(height: 12),
-                Text('Estimated hourly income: \$${_hourlyIncome}'),
-                Spacer(),
+                const SizedBox(height: 12),
+                Text('Estimated hourly income: \$$_hourlyIncome'),
+                const Spacer(),
                 ElevatedButton(
-                  child: Text('Update'),
+                  child: const Text('Update'),
                   onPressed: _trySubmit,
                 ),
               ],

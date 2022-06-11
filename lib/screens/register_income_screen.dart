@@ -57,16 +57,16 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
         child: Container(
             height: MediaQuery.of(context).size.height,
             child: Padding(
-              padding: EdgeInsets.all(22),
+              padding: const EdgeInsets.all(22),
               child: Column(
                 children: <Widget>[
                   Text('Step 2/2:\nLet’s help you set an estimate of your hourly income!',
                       style: Theme.of(context).textTheme.headline1),
-                  SizedBox(height: 15),
-                  Text(
+                  const SizedBox(height: 15),
+                  const Text(
                       'This information is needed to calculate how much money should be donated according to the number of hours you choose to volunteer. It is strictly confidential and will not be disclosed to any third-parties.',
                       ),
-                  SizedBox(height: 20),    
+                  const SizedBox(height: 20),    
                 
                   Form( 
                     child: TextField(
@@ -75,7 +75,7 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
                           _hourlyIncome = ((int.parse(value) / 160).floor()).toString();
                         });
                       },
-                      decoration: InputDecoration(labelText: "Enter your monthly income"),
+                      decoration: const InputDecoration(labelText: "Enter your monthly income"),
                       keyboardType: TextInputType.number,
                       inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
@@ -84,12 +84,12 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
                     ),
                   ),
                   
-                  SizedBox(height: 12),
-                  Text('Estimated hourly income: \$${_hourlyIncome}'),
+                  const SizedBox(height: 12),
+                  Text('Estimated hourly income: \$$_hourlyIncome'),
                   
-                  Spacer(),
+                  const Spacer(),
                   ElevatedButton(
-                    child: Text('Finish'),
+                    child: const Text('Finish'),
                     onPressed: () async {
                       if (widget.userName != null) {
                         User? user = await FirebaseAuth.instance
@@ -117,14 +117,6 @@ class _RegisterIncomeScreenState extends State<RegisterIncomeScreen> {
                             'hourlyIncome': _hourlyIncome,
                         });
                       };
-                      // Navigator.of(context)
-                      //   .pushAndRemoveUntil(
-                      //     MaterialPageRoute(
-                      //       builder: (context) =>
-                      //           TabsScreen(),
-                      //     ),
-                      //     ModalRoute.withName('/'),
-                      // );
                       Navigator.of(context)
                         .pushAndRemoveUntil(
                           MaterialPageRoute(

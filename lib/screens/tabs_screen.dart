@@ -18,8 +18,10 @@ class _TabsScreenState extends State<TabsScreen> {
   late List<Widget> _pages;
   late int _selectedPageIndex;
 
+  @override
   void initState() {
-    _selectedPageIndex = widget.tabNo != null ? widget.tabNo : 0;
+    _selectedPageIndex = widget.tabNo ?? 0;
+    super.initState();
   }
 
   void _selectPage(int index) {
@@ -44,11 +46,11 @@ class _TabsScreenState extends State<TabsScreen> {
         selectedItemColor: Colors.black,
         currentIndex: _selectedPageIndex,
         items: [
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
               icon: Icon(Icons.home_outlined), label: 'Home'),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
               icon: Icon(Icons.favorite_outline_rounded), label: 'Favourites'),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
               icon: Icon(Icons.account_circle_outlined), label: 'Profile'),
         ],
       ),

@@ -52,8 +52,6 @@ class _OrganisationsOverviewScreenState
     if (widget.filter != null) {
       results = [];
       for (var data in _allResults) {
-        print(data['taxDeductible']);
-        print(widget.filter['tax']);
         if ((data['categories']
                 .toSet()
                 .intersection(widget.filter['categories'].toSet())
@@ -112,7 +110,7 @@ class _OrganisationsOverviewScreenState
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(22),
+      padding: const EdgeInsets.all(22),
       child: Column(
         children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -134,7 +132,7 @@ class _OrganisationsOverviewScreenState
               Expanded(
                 child: TextField(
                   controller: _searchController,
-                  decoration: InputDecoration(),
+                  decoration: const InputDecoration(),
                 ),
               ),
             if (search)
@@ -153,7 +151,7 @@ class _OrganisationsOverviewScreenState
             children: [
               OutlinedButton.icon(
                 label: const Text('Filter'),
-                icon: Icon(Icons.filter_alt_outlined),
+                icon: const Icon(Icons.filter_alt_outlined),
                 onPressed: () {
                   showDialog(
                     context: context,
@@ -202,7 +200,7 @@ class _OrganisationsOverviewScreenState
                 );
               },
               child: Card(
-                margin: EdgeInsets.only(bottom: 16.0),
+                margin: const EdgeInsets.only(bottom: 16.0),
                 color: Theme.of(context).primaryColor,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -233,7 +231,7 @@ class _OrganisationsOverviewScreenState
                         },
                       ),
                       title: Text(_resultsList[index]['name'],
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                          style: const TextStyle(fontWeight: FontWeight.bold)),
                     ),
                     Image.network(_resultsList[index]['imageUrl'],
                         height: 145, fit: BoxFit.fitWidth),

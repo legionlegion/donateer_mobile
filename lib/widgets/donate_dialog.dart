@@ -67,7 +67,7 @@ class _DonateDialogState extends State<DonateDialog> {
     return AlertDialog(
       backgroundColor: Theme.of(context).secondaryHeaderColor,
       scrollable: true,
-      title: Text('Donationing your time'),
+      title: const Text('Donationing your time'),
       content: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -110,9 +110,9 @@ class _DonateDialogState extends State<DonateDialog> {
                   style: TextStyle(color: Colors.blue[900]),
                 )),
             Text(end == '' ? '' : end.substring(0, 19)),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             ElevatedButton(
-                child: Text("Submit"),
+                child: const Text("Submit"),
                 onPressed: () {
                   var duration = DateTime.parse(end).difference(DateTime.parse(start));
                   _donations.add({'name': widget.name, 'start': start, 'end': end, 'duration': duration.inMinutes});

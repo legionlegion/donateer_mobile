@@ -51,7 +51,7 @@ class DonationScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Text(obj["donateMessage"]),
             ),
-            Spacer(),
+            const Spacer(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 22),
               child: ElevatedButton(

@@ -77,11 +77,11 @@ class _MyAppState extends State<MyApp> {
               ),
               //bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
             ),
-            appBarTheme: AppBarTheme(
+            appBarTheme: const AppBarTheme(
                 backgroundColor: Colors.white, foregroundColor: Colors.black),
             elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 45),
+                minimumSize: const Size(double.infinity, 45),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
                 primary: Colors.black, //button color
@@ -104,23 +104,6 @@ class _MyAppState extends State<MyApp> {
                 ),
               ),
             )),
-        // home: StreamBuilder(
-        //   stream: FirebaseAuth.instance.authStateChanges(),
-        //   builder: (ctx, userSnapshot) {
-        //     if (!userSnapshot.hasData) {
-        //       return LoginScreen();
-        //     }
-        //     else if (hasIncome) {
-        //       return TabsScreen();
-        //     }
-        //     return RegisterIncomeScreen();
-        //   },
-        // ),
-        // home: (user != null)
-        //     // if user present, check if there is income
-        //     ? (hasIncome ? TabsScreen() : RegisterIncomeScreen())
-        //     // if no user and no income
-        //     : LoginScreen(),
         home: FutureBuilder<bool>(
           future: hasIncome,
           initialData: false,
@@ -137,12 +120,12 @@ class _MyAppState extends State<MyApp> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CircularProgressIndicator(),
+                      const CircularProgressIndicator(),
                       Visibility(
                         visible: snapshot.hasData,
-                        child: Text(
+                        child: const Text(
                           'Loading',
-                          style: const TextStyle(
+                          style: TextStyle(
                               color: Colors.black, fontSize: 24),
                         ),
                       ),

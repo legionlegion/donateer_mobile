@@ -1,4 +1,3 @@
-import 'package:donateer/screens/profile_screen.dart';
 import 'package:donateer/screens/tabs_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,7 +8,7 @@ class ProgressScreen extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(22),
+          padding: const EdgeInsets.all(22),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -31,13 +30,13 @@ class ProgressScreen extends StatelessWidget {
                 ),
               ]),
               const SizedBox(height: 7),
-              Text('PENDING CONTRIBUTIONS',
-                  style: const TextStyle(
+              const Text('PENDING CONTRIBUTIONS',
+                  style: TextStyle(
                     fontSize: 15.0,
                   )),
               const SizedBox(height: 10),
-              Text('PENDING CONTRIBUTIONS',
-                  style: const TextStyle(
+              const Text('PENDING CONTRIBUTIONS',
+                  style: TextStyle(
                     fontSize: 15.0,
                   )),
               const SizedBox(height: 7),
