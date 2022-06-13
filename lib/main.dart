@@ -75,6 +75,12 @@ class _MyAppState extends State<MyApp> {
                 fontSize: 14.0,
                 fontWeight: FontWeight.bold,
               ),
+              subtitle2: TextStyle(
+                fontSize: 14.0,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Buenard',
+                color: Colors.red[900],
+              ),
               //bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
             ),
             appBarTheme: const AppBarTheme(
@@ -125,8 +131,7 @@ class _MyAppState extends State<MyApp> {
                         visible: snapshot.hasData,
                         child: const Text(
                           'Loading',
-                          style: TextStyle(
-                              color: Colors.black, fontSize: 24),
+                          style: TextStyle(color: Colors.black, fontSize: 24),
                         ),
                       ),
                     ],

@@ -126,15 +126,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   controller: _emailTextController,
                 ),
-                TextField(
+                TextFormField(
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter a valid number.';
+                    }
+                    return null;
+                  },
                   onChanged: (value) {
                     setState(() {
                       _hourlyIncome =
                           ((int.parse(value) / 160).floor()).toString();
                     });
                   },
-                  decoration:
-                      const InputDecoration(labelText: "Enter your monthly income"),
+                  decoration: const InputDecoration(
+                      labelText: "Enter your monthly income"),
                   keyboardType: TextInputType.number,
                   inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),

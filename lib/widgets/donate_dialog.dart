@@ -10,8 +10,7 @@ class DonateDialog extends StatefulWidget {
   final String name;
   final Map obj;
 
-  DonateDialog(
-      {Key? key, required this.name, required this.obj})
+  DonateDialog({Key? key, required this.name, required this.obj})
       : super(key: key);
   @override
   _DonateDialogState createState() => _DonateDialogState();
@@ -22,6 +21,7 @@ class _DonateDialogState extends State<DonateDialog> {
   String end = '';
   User? user = FirebaseAuth.instance.currentUser;
   List _donations = [];
+  var isValid = true;
 
   @override
   void initState() {
@@ -43,6 +43,25 @@ class _DonateDialogState extends State<DonateDialog> {
     });
   }
 
+  submitDonation(duration) {
+    _donations.add({
+      'name': widget.name,
+      'start': start,
+      'end': end,
+      'duration': duration.inMinutes
+    });
+    updateFirestore();
+    Add2Calendar.addEvent2Cal(getEvent(start, end));
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => DonationScreen(obj: widget.obj),
+      ),
+      (route) => false,
+    );
+  }
+
   updateFirestore() async {
     await FirebaseFirestore.instance
         .collection('Users')
@@ -62,6 +81,38 @@ class _DonateDialogState extends State<DonateDialog> {
     return event;
   }
 
+  // Future<Null> _selectDate(BuildContext context) async {
+  //   final DateTime picked = await showDatePicker(
+  //       context: context,
+  //       initialDate: selectedDate,
+  //       initialDatePickerMode: DatePickerMode.day,
+  //       firstDate: DateTime(2015),
+  //       lastDate: DateTime(2101));
+  //   if (picked != null)
+  //     setState(() {
+  //       selectedDate = picked;
+  //       _dateController.text = DateFormat.yMd().format(selectedDate);
+  //     });
+  // }
+
+  // Future<Null> _selectTime(BuildContext context) async {
+  //   final TimeOfDay picked = await showTimePicker(
+  //     context: context,
+  //     initialTime: selectedTime,
+  //   );
+  //   if (picked != null)
+  //     setState(() {
+  //       selectedTime = picked;
+  //       _hour = selectedTime.hour.toString();
+  //       _minute = selectedTime.minute.toString();
+  //       _time = _hour + ' : ' + _minute;
+  //       _timeController.text = _time;
+  //       _timeController.text = formatDate(
+  //           DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
+  //           [hh, ':', nn, " ", am]).toString();
+  //     });
+  // }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -73,7 +124,7 @@ class _DonateDialogState extends State<DonateDialog> {
         child: Column(
           children: <Widget>[
             Text(
-                'Thank you for your support to ${widget.name}. How many hours do you want to donate?'),
+                'Thank you for your support to ${widget.name}. \nHow many hours do you want to donate?'),
             TextButton(
                 onPressed: () {
                   DatePicker.showDateTimePicker(
@@ -111,23 +162,26 @@ class _DonateDialogState extends State<DonateDialog> {
                 )),
             Text(end == '' ? '' : end.substring(0, 19)),
             const SizedBox(height: 12),
+            isValid
+                ? Container()
+                : Text(
+                    'Start date must not be later than end date!',
+                    style: Theme.of(context).textTheme.subtitle2,
+                    textAlign: TextAlign.center,
+                  ),
+            isValid ? Container() : const SizedBox(height: 12),
             ElevatedButton(
                 child: const Text("Submit"),
                 onPressed: () {
-                  var duration = DateTime.parse(end).difference(DateTime.parse(start));
-                  _donations.add({'name': widget.name, 'start': start, 'end': end, 'duration': duration.inMinutes});
-                  updateFirestore();
-                  Add2Calendar.addEvent2Cal(getEvent(start, end));
-                  
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (ctx) => DonationScreen(
-                        obj: widget.obj
-                      ),
-                    ),
-                    (route) => false,
-                  );
+                  var duration =
+                      DateTime.parse(end).difference(DateTime.parse(start));
+                  if (duration > Duration.zero) {
+                    this.submitDonation(duration);
+                  } else {
+                    setState(() {
+                      isValid = false;
+                    });
+                  }
                 })
           ],
         ),
