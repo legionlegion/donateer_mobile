@@ -55,23 +55,6 @@ class DonationScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 22),
                 child: ElevatedButton(
-                  child: const Text('VIEW DONATION HISTORY'),
-                  onPressed: () {
-                    // showDialog(
-                    //   context: context,
-                    //   builder: (BuildContext context) {
-                    //     // return DonateDialog(name: obj['name'], obj: obj);
-                    //   },
-                    // );
-                  },
-                ),
-              ),
-              SizedBox(
-                height: 12,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 22),
-                child: ElevatedButton(
                   child: const Text('DONATE YOUR TIME'),
                   onPressed: () {
                     showDialog(
