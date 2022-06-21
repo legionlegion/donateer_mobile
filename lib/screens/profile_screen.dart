@@ -9,8 +9,95 @@ import 'package:provider/provider.dart';
 import './login_screen.dart';
 import './progress_screen.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   User? user = FirebaseAuth.instance.currentUser;
+
+  String hoursDonated = '';
+
+  double amountDonated = 0.00;
+
+  List donated = [];
+
+  String hoursToDonate = '';
+
+  double amountToDonate = 0.00;
+
+  List toDonate = [];
+
+  String income = '';
+
+  void initState() {
+    _getUserInfo();
+  }
+
+  void _getUserInfo() async {
+    int timeDonated = 0;
+    int timeToDonate = 0;
+    DocumentSnapshot doc = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(user!.uid)
+        .get();
+    final data = doc.data() as Map<String, dynamic>;
+    var donations = data['donations'];
+    print("Donations");
+    print(donations);
+    donations.forEach((donation) {
+      DateTime startTime = DateTime.parse(donation['start']);
+      int duration = donation['duration'];
+      double amount = donation['donationAmount'];
+      if (startTime.isBefore(DateTime.now())) {
+        timeDonated += duration;
+        amountDonated += amount;
+        donated.add(donation);
+      } else {
+        timeToDonate += duration;
+        amountToDonate += amount;
+        toDonate.add(donation);
+      }
+    });
+    print("Results:");
+    print("Time donated");
+    print(timeDonated);
+    print("Amount donated");
+    print(amountDonated);
+    print("Time to donate");
+    print(timeToDonate);
+    print("Amount to donate");
+    print(amountToDonate);
+
+    print("Formated hours:");
+    print(hoursDonated);
+    print(hoursToDonate);
+    setState(() {
+      hoursDonated = _formatDuration(Duration(minutes: timeDonated));
+      hoursToDonate = _formatDuration(Duration(minutes: timeToDonate));
+    });
+  }
+
+  String _formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    int hours = duration.inHours;
+    // never donate at all
+    if (hours == 0 && duration.inMinutes == 0)
+      return "${twoDigitMinutes} hours";
+    // less than 1 hr
+    if (hours < 1) {
+      if (twoDigitMinutes == 1) return "${twoDigitMinutes} minute";
+      return "${twoDigitMinutes} minutes";
+    }
+    // 1 hr or more, only show hour
+    if (hours == 1) {
+      return "${twoDigits(hours)} hour";
+    } else {
+      return "${twoDigits(hours)} hours";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,26 +181,33 @@ class ProfileScreen extends StatelessWidget {
               child: Column(
                 children: [
                   ListTile(
-                      leading: Padding(
-                          padding: const EdgeInsets.all(5),
-                          child: Image.asset('assets/images/progress.png')),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.arrow_forward_ios),
-                        onPressed: () {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => ProgressScreen(),
-                            ),
-                          );
-                        },
+                    leading: Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: Image.asset('assets/images/progress.png')),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.arrow_forward_ios),
+                      onPressed: () {
+                        print("Donated");
+                        print(donated);
+                        print("To donate");
+                        print(toDonate);
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => ProgressScreen(
+                                donated: donated, toDonate: toDonate),
+                          ),
+                          (Route<dynamic> route) => false,
+                        );
+                      },
+                    ),
+                    title: const Text(
+                      'My Progress',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
                       ),
-                      title: const Text(
-                        'My Progress',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -124,7 +218,8 @@ class ProfileScreen extends StatelessWidget {
                 Expanded(
                   child: Card(
                     child: ListTile(
-                      title: Text('hours', textAlign: TextAlign.center),
+                      title:
+                          Text('${hoursDonated}', textAlign: TextAlign.center),
                       subtitle: const Text('total volunteered',
                           textAlign: TextAlign.center),
                     ),
@@ -133,7 +228,8 @@ class ProfileScreen extends StatelessWidget {
                 Expanded(
                   child: Card(
                     child: ListTile(
-                      title: Text('hours', textAlign: TextAlign.center),
+                      title:
+                          Text('${hoursToDonate}', textAlign: TextAlign.center),
                       subtitle: const Text('pending volunteer',
                           textAlign: TextAlign.center),
                     ),
@@ -147,7 +243,8 @@ class ProfileScreen extends StatelessWidget {
                 Expanded(
                   child: Card(
                     child: ListTile(
-                      title: Text('\$', textAlign: TextAlign.center),
+                      title: Text('\$ ${amountDonated}',
+                          textAlign: TextAlign.center),
                       subtitle: const Text('total donated',
                           textAlign: TextAlign.center),
                     ),
@@ -156,7 +253,8 @@ class ProfileScreen extends StatelessWidget {
                 Expanded(
                   child: Card(
                     child: ListTile(
-                      title: Text('\$', textAlign: TextAlign.center),
+                      title: Text('\$ ${amountToDonate}',
+                          textAlign: TextAlign.center),
                       subtitle: const Text('pending donation',
                           textAlign: TextAlign.center),
                     ),

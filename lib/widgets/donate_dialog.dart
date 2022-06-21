@@ -21,10 +21,10 @@ class _DonateDialogState extends State<DonateDialog> {
   final _formKey = GlobalKey<FormState>();
   User? user = FirebaseAuth.instance.currentUser;
   List _donations = [];
-  DateTime selectedDate = DateTime.now();
   final _startDateController = TextEditingController();
   final _startHourController = TextEditingController();
   final _endHourController = TextEditingController();
+  DateTime selectedDate = DateTime.now();
   String startHour = '';
   String endHour = '';
 
@@ -33,6 +33,7 @@ class _DonateDialogState extends State<DonateDialog> {
   @override
   void initState() {
     getData();
+    _startDateController.text = DateFormat.yMMMMd().format(selectedDate);
     super.initState();
   }
 
@@ -59,13 +60,22 @@ class _DonateDialogState extends State<DonateDialog> {
     }
   }
 
-  submitDonation(duration) {
+  submitDonation(duration) async {
+    DocumentSnapshot doc = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(user!.uid)
+        .get();
+    final data = doc.data() as Map<String, dynamic>;
+    var amount = (int.parse(data['hourlyIncome']) / 60 * duration.inMinutes)
+        .toStringAsFixed(2);
+    var formattedDate = DateFormat.yMMMMd().format(selectedDate);
     _donations.add({
       'name': widget.name,
       'start': startHour,
       'end': endHour,
       'duration': duration.inMinutes,
-      'date': selectedDate,
+      'date': formattedDate,
+      'donationAmount': double.parse(amount),
     });
     updateFirestore();
     Add2Calendar.addEvent2Cal(getEvent(startHour, endHour));
@@ -138,6 +148,9 @@ class _DonateDialogState extends State<DonateDialog> {
             children: <Widget>[
               Text(
                   'Thank you for your support to ${widget.name}. \nHow many hours do you want to donate?'),
+              SizedBox(
+                height: 12,
+              ),
               Text(
                 'Start date',
                 textAlign: TextAlign.center,
@@ -156,7 +169,7 @@ class _DonateDialogState extends State<DonateDialog> {
                     keyboardType: TextInputType.text,
                     controller: _startDateController,
                     validator: (value) {
-                      if (value!.isEmpty) {
+                      if (value == null || value!.isEmpty) {
                         return 'Please select a date!';
                       }
                       return null;
@@ -217,7 +230,7 @@ class _DonateDialogState extends State<DonateDialog> {
                         keyboardType: TextInputType.text,
                         controller: _startHourController,
                         validator: (value) {
-                          if (value!.isEmpty) {
+                          if (value == null || value!.isEmpty) {
                             return 'Please select starting time!';
                           }
                           return null;
@@ -266,7 +279,7 @@ class _DonateDialogState extends State<DonateDialog> {
                         keyboardType: TextInputType.text,
                         controller: _endHourController,
                         validator: (value) {
-                          if (value!.isEmpty) {
+                          if (value == null || value!.isEmpty) {
                             return 'Please select ending date!';
                           }
                           return null;
@@ -285,45 +298,6 @@ class _DonateDialogState extends State<DonateDialog> {
                   ),
                 ],
               ),
-
-              // Text(end == '' ? '' : end.substring(0, 19)),
-              // TextButton(
-              //     onPressed: () {
-              //       DatePicker.showPicker(
-              //         context,
-              //         showTitleActions: true,
-              //         minTime: DateTime.now(),
-              //         onConfirm: (date) {
-              //           setState(() {
-              //             start = date.toString();
-              //           });
-              //         },
-              //       );
-              //     },
-              //     child: Text(
-              //       'Select start time',
-              //       style: TextStyle(color: Colors.blue[900]),
-              //     )),
-              // Text(start == '' ? '' : start.substring(0, 19)),
-              // TextButton(
-              //     onPressed: () {
-              //       DatePicker.showDateTimePicker(
-              //         context,
-              //         showTitleActions: true,
-              //         minTime: DateTime.now(),
-              //         onConfirm: (date) {
-              //           setState(() {
-              //             end = date.toString();
-              //           });
-              //         },
-              //       );
-              //     },
-              //     child: Text(
-              //       'Select end time',
-              //       style: TextStyle(color: Colors.blue[900]),
-              //     )),
-              // Text(end == '' ? '' : end.substring(0, 19)),
-
               const SizedBox(height: 12),
               isDurationValid
                   ? Container()
