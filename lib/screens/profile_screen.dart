@@ -17,13 +17,13 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   User? user = FirebaseAuth.instance.currentUser;
 
-  String hoursDonated = '';
+  String hoursDonated = 'No hours';
 
   double amountDonated = 0.00;
 
   List donated = [];
 
-  String hoursToDonate = '';
+  String hoursToDonate = 'No hours';
 
   double amountToDonate = 0.00;
 
