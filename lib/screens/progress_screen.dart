@@ -54,7 +54,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                   style: Theme.of(context).textTheme.headline1,
                 ),
               ]),
-              const SizedBox(height: 7),
+              const SizedBox(height: 10),
               const Text('PENDING CONTRIBUTIONS',
                   style: TextStyle(
                     fontSize: 15.0,
@@ -68,28 +68,31 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       vertical: 8,
                       horizontal: 5,
                     ),
-                    child: ListTile(
-                      title: Text(
-                        widget.toDonate[index]['name'],
-                        style: Theme.of(context).textTheme.headline6,
+                    child: Padding(
+                      padding: EdgeInsets.all(5),
+                      child: ListTile(
+                        title: Text(
+                          widget.toDonate[index]['name'],
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(
+                          _formatExactDuration(
+                                Duration(
+                                  minutes: widget.toDonate[index]['duration'],
+                                ),
+                              ) +
+                              '\n' +
+                              widget.donated[index]['date'],
+                        ),
+                        // trailing: IconButton(
+                        //   icon: Icon(
+                        //     Icons.delete,
+                        //     color: Theme.of(context).errorColor,
+                        //   ),
+                        //   onPressed: () =>
+                        //       deleteTransaction(transactions[index].id),
+                        // ),
                       ),
-                      subtitle: Text(
-                        _formatExactDuration(
-                              Duration(
-                                minutes: widget.toDonate[index]['duration'],
-                              ),
-                            ) +
-                            '\n' +
-                            widget.donated[index]['date'],
-                      ),
-                      // trailing: IconButton(
-                      //   icon: Icon(
-                      //     Icons.delete,
-                      //     color: Theme.of(context).errorColor,
-                      //   ),
-                      //   onPressed: () =>
-                      //       deleteTransaction(transactions[index].id),
-                      // ),
                     ),
                   );
                 },
@@ -110,29 +113,32 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       vertical: 8,
                       horizontal: 5,
                     ),
-                    child: ListTile(
-                      title: Text(
-                        widget.donated[index]['name'],
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                      subtitle: Text(
-                        _formatExactDuration(
-                              Duration(
-                                minutes: widget.donated[index]['duration'],
-                              ),
-                            ) +
-                            '\n' +
-                            widget.donated[index]['date'],
-                      ),
+                    child: Padding(
+                      padding: EdgeInsets.all(5),
+                      child: ListTile(
+                        title: Text(
+                          widget.donated[index]['name'],
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(
+                          _formatExactDuration(
+                                Duration(
+                                  minutes: widget.donated[index]['duration'],
+                                ),
+                              ) +
+                              '\n' +
+                              widget.donated[index]['date'],
+                        ),
 
-                      // trailing: IconButton(
-                      //   icon: Icon(
-                      //     Icons.delete,
-                      //     color: Theme.of(context).errorColor,
-                      //   ),
-                      //   onPressed: () =>
-                      //       deleteTransaction(transactions[index].id),
-                      // ),
+                        // trailing: IconButton(
+                        //   icon: Icon(
+                        //     Icons.delete,
+                        //     color: Theme.of(context).errorColor,
+                        //   ),
+                        //   onPressed: () =>
+                        //       deleteTransaction(transactions[index].id),
+                        // ),
+                      ),
                     ),
                   );
                 },

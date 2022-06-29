@@ -78,10 +78,8 @@ class _MyAppState extends State<MyApp> {
               subtitle2: TextStyle(
                 fontSize: 14.0,
                 fontWeight: FontWeight.bold,
-                fontFamily: 'Buenard',
                 color: Colors.red[900],
               ),
-              //bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
             ),
             appBarTheme: const AppBarTheme(
                 backgroundColor: Colors.white, foregroundColor: Colors.black),
