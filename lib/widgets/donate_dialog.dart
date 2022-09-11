@@ -61,6 +61,9 @@ class _DonateDialogState extends State<DonateDialog> {
   }
 
   submitDonation(duration) async {
+    print("hereee");
+    print(startHour);
+    print(selectedDate);
     DocumentSnapshot doc = await FirebaseFirestore.instance
         .collection('Users')
         .doc(user!.uid)
@@ -206,7 +209,7 @@ class _DonateDialogState extends State<DonateDialog> {
                         onConfirm: (hour) {
                           setState(() {
                             // YYYY-MM-DD HH-MM-SS.SSS format
-                            startHour = hour.toString();
+                            startHour = selectedDate.toString().substring(0,11) + hour.toString().substring(11);
                             // HH:MM AM/PM format
                             _startHourController.text =
                                 DateFormat('jm').format(hour);
@@ -255,7 +258,7 @@ class _DonateDialogState extends State<DonateDialog> {
                         onConfirm: (hour) {
                           setState(() {
                             // YYYY-MM-DD HH-MM-SS.SSS format
-                            endHour = hour.toString();
+                            endHour = selectedDate.toString().substring(0,11) + hour.toString().substring(11);;
                             // HH:MM AM/PM format
                             _endHourController.text =
                                 DateFormat('jm').format(hour);
